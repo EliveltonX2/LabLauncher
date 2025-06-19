@@ -1,5 +1,3 @@
-# config/settings.py (VERSÃO FINAL E SEGURA)
-
 import os
 from pathlib import Path
 import dj_database_url # Importa o novo pacote
@@ -45,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -100,16 +99,19 @@ TIME_ZONE = 'America/Campo_Grande' # Horário local
 USE_I18N = True
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
+# --- Arquivos Estáticos (CSS, JS do Admin, etc.) ---
+# Servidos pelo WhiteNoise em produção
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# Media files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# --- Arquivos de Mídia (Uploads de usuários) ---
+# Servidos pelo S3 em produção
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Configurações de Storage que mudam entre Desenvolvimento e Produção (Render)
+# Apenas em produção, configure o S3 para os uploads (mídia)
 if os.getenv('USE_S3') == 'TRUE':
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -118,11 +120,10 @@ if os.getenv('USE_S3') == 'TRUE':
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     
-    # Sobrescreve URLs e backends de armazenamento para S3
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    # Define o S3 como o local para ARQUIVOS DE MÍDIA
+    DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
+    # A URL de mídia aponta para o S3
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-    DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage' # CORRIGIDO
-    STATICFILES_STORAGE = 'config.storages.StaticStorage' # CORRIGIDO
 
 
 # Default primary key field type
