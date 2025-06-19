@@ -100,3 +100,27 @@ if RENDER_EXTERNAL_HOSTNAME:
 if not USE_S3:
     ALLOWED_HOSTS.append('127.0.0.1')
     ALLOWED_HOSTS.append('localhost')
+
+
+# config/settings.py (adicionar no final de tudo)
+
+# ==============================================================================
+#  BLOCO DE DEBUG FINAL PARA DEFAULT_FILE_STORAGE
+# ==============================================================================
+import logging
+logger = logging.getLogger(__name__)
+
+try:
+    # Tenta registrar o valor final da variável mais importante
+    storage_em_uso = DEFAULT_FILE_STORAGE
+    logger.warning(f"VERIFICACAO FINAL: DEFAULT_FILE_STORAGE esta definido como: '{storage_em_uso}'")
+
+    # Também verifica a classe real importada pelo Django
+    from django.core.files.storage import default_storage
+    logger.warning(f"VERIFICACAO FINAL: A classe de default_storage em uso e: {type(default_storage)}")
+
+except NameError:
+    logger.error("VERIFICACAO FINAL: A variavel DEFAULT_FILE_STORAGE nao foi definida.")
+except Exception as e:
+    logger.error(f"VERIFICACAO FINAL: Erro ao verificar o storage: {e}")
+# ==============================================================================
