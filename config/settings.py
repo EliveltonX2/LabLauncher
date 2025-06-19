@@ -78,5 +78,3 @@ if RENDER_EXTERNAL_HOSTNAME:
 if not USE_S3:
     ALLOWED_HOSTS.append('127.0.0.1')
     ALLOWED_HOSTS.append('localhost')
-
-DEFAULT_FILE_STORAGE = 'config.storages.media_storage'
