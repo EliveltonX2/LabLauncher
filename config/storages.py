@@ -11,12 +11,9 @@ class MediaStorage(LazyObject):
         Este método é chamado apenas na primeira vez que o storage é acessado.
         Neste ponto, temos certeza de que todas as settings já foram carregadas.
         """
-        if settings.USE_S3:
-            # Se USE_S3 for True, o objeto de storage real será o S3Boto3Storage.
-            self._wrapped = S3Boto3Storage()
-        else:
-            # Caso contrário, será o FileSystemStorage padrão.
-            self._wrapped = FileSystemStorage()
+
+        # Se USE_S3 for True, o objeto de storage real será o S3Boto3Storage.
+        self._wrapped = S3Boto3Storage()
 
 # Criamos uma instância "preguiçosa" que será importada no settings.py
 media_storage = MediaStorage()
