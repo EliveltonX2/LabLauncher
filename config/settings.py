@@ -14,7 +14,6 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
     'pages.apps.PagesConfig', 'users.apps.UsersConfig', 'catalog.apps.CatalogConfig',
-    'submission.apps.SubmissionConfig', 'whitenoise.middleware.WhiteNoiseMiddleware',
     'ckeditor', 'ckeditor_uploader',
 ]
 MIDDLEWARE = [
