@@ -42,7 +42,7 @@ def home_view(request):
              message = f"<h1>Erro Inesperado ao Chamar .path()</h1><pre>{e_path}</pre>"
              status_code = 500
 
-        return HttpResponse(message, status=code)
+        return HttpResponse(message, status=status_code)
 
     except Exception as e_save:
         logger.error("--- FALHA AO SALVAR O ARQUIVO! ---", exc_info=True)
