@@ -113,17 +113,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Apenas em produção, configure o S3 para os uploads (mídia)
 if os.getenv('USE_S3') == 'TRUE':
+    # Credenciais e Nome do Bucket
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    
+    # Configurações de Conexão e Assinatura - ESSA É A MUDANÇA
+    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME') # ex: 'us-east-1'
+    AWS_S3_SIGNATURE_VERSION = 's3v4'
+    AWS_S3_ENDPOINT_URL = f'https://s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+
+    # Parâmetros dos Objetos
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     
-    # Define o S3 como o local para ARQUIVOS DE MÍDIA
+    # Backend de Armazenamento
     DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
-    # A URL de mídia aponta para o S3
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    
+    # URL para acessar os arquivos
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
 
 
 # Default primary key field type
