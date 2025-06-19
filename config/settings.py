@@ -79,7 +79,7 @@ if USE_S3:
     AWS_S3_SIGNATURE_VERSION = 's3v4'
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = 'public-read'
-    DEFAULT_FILE_STORAGE = 'config.storages.S3MediaStorage' # Aponta para nossa classe S3
+    DEFAULT_FILE_STORAGE = 'config.storages.backends.s3.S3Storage' # Aponta para nossa classe S3
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
 else:
     # Configurações para desenvolvimento local
