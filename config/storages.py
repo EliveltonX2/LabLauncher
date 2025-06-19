@@ -1,12 +1,16 @@
-# LabLauncher/storages.py
+# config/storages.py
+
 from storages.backends.s3boto3 import S3Boto3Storage
+from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
-class StaticStorage(S3Boto3Storage):
-    location = settings.AWS_LOCATION_STATIC
-    default_acl = 'public-read'
-
-class MediaStorage(S3Boto3Storage):
-    location = settings.AWS_LOCATION_MEDIA
-    default_acl = 'public-read'
-    file_overwrite = False # Não sobrescrever arquivos com o mesmo nome
+class MediaStorage(S3Boto3Storage if settings.USE_S3 else FileSystemStorage):
+    if settings.USE_S3:
+        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+        location = 'media'
+        default_acl = 'public-read'
+        file_overwrite = False
+    else:
+        # Configuração para FileSystemStorage em desenvolvimento
+        location = settings.MEDIA_ROOT
+        base_url = settings.MEDIA_URL

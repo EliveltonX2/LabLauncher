@@ -1,27 +1,23 @@
+# config/settings.py (VERSÃO FINAL E REESTRUTURADA)
+
 import os
 from pathlib import Path
-import dj_database_url # Importa o novo pacote
+import dj_database_url
+import logging
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Carrega a SECRET_KEY do ambiente. Se não encontrar, usa uma chave insegura (só para emergências locais).
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^cuf)nz_*eiy&&4t16$-ea0p06w388)^bqvn0n*w)78=7ox=%z')
-
-# O modo DEBUG será 'True' apenas se a variável de ambiente DEBUG for 'TRUE'. No Render, ela é 'FALSE'.
+# Chaves e Configurações de Segurança
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-local-key-for-dev')
 DEBUG = os.getenv('DEBUG') == 'TRUE'
-
-# Configuração de ALLOWED_HOSTS
 ALLOWED_HOSTS = []
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-# Adiciona o localhost para desenvolvimento apenas se não estivermos em produção
-if not os.getenv('USE_S3'):
-    ALLOWED_HOSTS.append('127.0.0.1')
-    ALLOWED_HOSTS.append('localhost')
-
+# --- DEFINIÇÃO INCONDICIONAL DOS STORAGES ---
+# Dizemos ao Django DESDE O INÍCIO quais classes usar.
+# A lógica de qual storage usar (local vs S3) estará dentro da própria classe.
+DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,18 +28,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Nossos apps
-    'pages.apps.PagesConfig', # Adicione esta linha
+    'pages.apps.PagesConfig',
     'users.apps.UsersConfig',
     'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
     # Apps de terceiros
+    'whitenoise.middleware.WhiteNoiseMiddleware', # App do WhiteNoise (melhor prática)
     'ckeditor',
     'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Middleware do WhiteNoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,8 +50,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
-TEMPLATES = [
+TEMPLATES = [ #... (pode manter sua configuração de TEMPLATES igual)
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -68,23 +64,12 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-DATABASES = {
-    'default': dj_database_url.config(
-        # Fallback para sqlite se DATABASE_URL não estiver definida
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-        conn_max_age=600 # Mantém as conexões abertas por 600s
-    )
-}
+DATABASES = {'default': dj_database_url.config(default=f'sqlite:///{BASE_DIR / "db.sqlite3"}', conn_max_age=600)}
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+# Password validation, etc... (mantenha o resto das suas configs)
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -92,100 +77,45 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 # Internationalization
 LANGUAGE_CODE = 'pt-br'
-TIME_ZONE = 'America/Campo_Grande' # Horário local
+TIME_ZONE = 'America/Campo_Grande'
 USE_I18N = True
 USE_TZ = True
 
-# --- Arquivos Estáticos (CSS, JS do Admin, etc.) ---
-# Servidos pelo WhiteNoise em produção
+# --- CONFIGURAÇÃO DOS ARQUIVOS ESTÁTICOS E DE MÍDIA ---
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# --- Arquivos de Mídia (Uploads de usuários) ---
-# Servidos pelo S3 em produção
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Apenas em produção, configure o S3 para os uploads (mídia)
-if os.getenv('USE_S3') == 'TRUE':
-    # Credenciais e Nome do Bucket
+# --- CONFIGURAÇÃO DAS VARIÁVEIS DO S3 ---
+# Estas variáveis só serão usadas pela classe MediaStorage se USE_S3 for TRUE
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
+if USE_S3:
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-    
-    # Configurações de Conexão e Assinatura - ESSA É A MUDANÇA
-    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME') # ex: 'us-east-1'
+    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
     AWS_S3_SIGNATURE_VERSION = 's3v4'
     AWS_S3_ENDPOINT_URL = f'https://s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+    # Ajuste final na URL de Mídia para produção
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
 
-    # Parâmetros dos Objetos
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    
-    # Backend de Armazenamento
-    DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
-    
-    # URL para acessar os arquivos
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
-
-
-# Default primary key field type
+# Outras configs
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.CustomUser'
-
-# Configurações do CKEditor
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_STORAGE_BACKEND = "django.core.files.storage.DefaultStorage"
 
+# Configuração de ALLOWED_HOSTS (movido para o final para garantir que as variáveis sejam lidas)
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+if not USE_S3: # Adiciona localhost em desenvolvimento
+    ALLOWED_HOSTS.append('127.0.0.1')
+    ALLOWED_HOSTS.append('localhost')
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO", # Nível base para a raiz
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "DEBUG", # Logs do Django
-            "propagate": True,
-        },
-        "boto3": {
-            "handlers": ["console"],
-            "level": "DEBUG", # Logs da AWS
-            "propagate": True,
-        },
-        "botocore": {
-            "handlers": ["console"],
-            "level": "DEBUG", # Logs da AWS (nível mais baixo)
-            "propagate": True,
-        },
-        "storages": {
-            "handlers": ["console"],
-            "level": "DEBUG", # Logs do django-storages
-            "propagate": True,
-        },
-    },
-}
-
-# LINHA DE TESTE PARA VERIFICAR SE O LOGGING ESTÁ FUNCIONANDO
-import logging
-logger = logging.getLogger(__name__)
-logger.warning(">>> A CONFIGURACAO DE LOGGING FOI CARREGADA CORRETAMENTE <<<")
+# Teste de logging (pode remover depois)
+logger.warning(">>> NOVA CONFIGURACAO DE SETTINGS CARREGADA <<<")
