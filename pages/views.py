@@ -1,4 +1,4 @@
-# pages/views.py (CÓDIGO DE DEBUG TEMPORÁRIO)
+# pages/views.py (TESTE DE UPLOAD SEM SEPARADOR DE PATH)
 
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
@@ -8,15 +8,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 def home_view(request):
-    logger.warning("--- VIEW DE TESTE: Iniciando upload para S3. ---")
+    logger.warning("--- INICIANDO TESTE DE UPLOAD SEM SEPARADOR DE PATH ---")
     try:
-        file_content = b"Teste final de upload para debug."
+        file_content = b"Teste de upload com nome de objeto simples."
         file = ContentFile(file_content)
-        file_name = default_storage.save("debug/final_test.txt", file)
-
-        logger.warning(f"--- VIEW DE TESTE: Sucesso aparente! Django salvou como '{file_name}'. ---")
-        return HttpResponse(f"<h1>Sucesso (Aparente)!</h1><p>Django acredita que salvou o arquivo '{file_name}'. Verifique os logs para detalhes da inicializacao do storage.</p>")
+        
+        # A MUDANÇA CRÍTICA: Salva com um nome simples, sem barras "/"
+        object_name_without_path = "teste_final_no_bucket.txt"
+        file_name = default_storage.save(object_name_without_path, file)
+        
+        logger.warning(f"--- SUCESSO (APARENTE)! Django salvou como '{file_name}'. ---")
+        return HttpResponse(f"<h1>Teste Concluido!</h1><p>Tentativa de salvar o arquivo como '{file_name}' (sem caminho de pasta).<br>Por favor, verifique a raiz do seu bucket S3 agora.</p>")
 
     except Exception as e:
-        logger.error("--- VIEW DE TESTE: FALHA NO UPLOAD! ---", exc_info=True)
+        logger.error("--- FALHA NO UPLOAD! ---", exc_info=True)
         return HttpResponse(f"<h1>Erro no Upload</h1><h2>{type(e).__name__}</h2><pre>{e}</pre>", status=500)
