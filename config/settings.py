@@ -134,39 +134,17 @@ logging.warning(">>> NOVA CONFIGURACAO DE SETTINGS CARREGADA <<<")
 # ==============================================================================
 #  BLOCO DE DEBUG PARA VERIFICAR VARIÁVEIS DE AMBIENTE
 # ==============================================================================
-import logging
 
-logger = logging.getLogger(__name__)
+logging.warning(os.getenv('DEBUG'))
+logging.warning(os.getenv('USE_S3'))
+logging.warning(os.getenv('SECRET_KEY'))
+logging.warning(os.getenv('DATABASE_URL'))
+logging.warning(os.getenv('AWS_ACCESS_KEY_ID'))
+logging.warning(os.getenv('AWS_SECRET_ACCESS_KEY'))
+logging.warning(os.getenv('AWS_STORAGE_BUCKET_NAME'))
+logging.warning(os.getenv('AWS_S3_REGION_NAME'))
+logging.warning(os.getenv('PYTHONPATH'))
+logging.warning(os.getenv('RENDER_EXTERNAL_HOSTNAME'))
 
-# Lista das variáveis de ambiente que queremos verificar
-env_keys_to_check = [
-    'DEBUG',
-    'USE_S3',
-    'DATABASE_URL',
-    'SECRET_KEY',
-    'AWS_ACCESS_KEY_ID',
-    'AWS_SECRET_ACCESS_KEY',
-    'AWS_STORAGE_BUCKET_NAME',
-    'AWS_S3_REGION_NAME',
-    'PYTHONPATH',
-    'RENDER_EXTERNAL_HOSTNAME'
-]
 
-logger.warning("--- VERIFICANDO VARIAVEIS DE AMBIENTE CARREGADAS ---")
-
-for key in env_keys_to_check:
-    value = os.environ.get(key)
-    if value:
-        # Por segurança, não vamos printar as chaves secretas inteiras
-        if 'SECRET' in key or 'KEY' in key and key != 'SECRET_KEY':
-             # Mostra apenas os primeiros 5 caracteres da chave de acesso
-            logger.info(f"Variavel '{key}': '{value[:5]}...' (Encontrada)")
-        elif key == 'SECRET_KEY':
-            logger.info(f"Variavel '{key}': '**********' (Encontrada)")
-        else:
-            logger.info(f"Variavel '{key}': '{value}' (Encontrada)")
-    else:
-        logger.error(f"Variavel '{key}': Nao encontrada ou vazia (None)")
-
-logger.warning("--- FIM DA VERIFICACAO ---")
 # ==============================================================================
