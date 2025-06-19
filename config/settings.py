@@ -141,29 +141,51 @@ AUTH_USER_MODEL = 'users.CustomUser'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_STORAGE_BACKEND = "django.core.files.storage.DefaultStorage"
 
-# config/settings.py (adicionar no final do arquivo)
 
-# --- CONFIGURAÇÃO DE LOGS PARA DEBUG DO S3 ---
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
         },
     },
-    'loggers': {
-        'boto3': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
         },
-        'botocore': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO", # Nível base para a raiz
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG", # Logs do Django
+            "propagate": True,
         },
-        'storages': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+        "boto3": {
+            "handlers": ["console"],
+            "level": "DEBUG", # Logs da AWS
+            "propagate": True,
+        },
+        "botocore": {
+            "handlers": ["console"],
+            "level": "DEBUG", # Logs da AWS (nível mais baixo)
+            "propagate": True,
+        },
+        "storages": {
+            "handlers": ["console"],
+            "level": "DEBUG", # Logs do django-storages
+            "propagate": True,
         },
     },
 }
+
+# LINHA DE TESTE PARA VERIFICAR SE O LOGGING ESTÁ FUNCIONANDO
+import logging
+logger = logging.getLogger(__name__)
+logger.warning(">>> A CONFIGURACAO DE LOGGING FOI CARREGADA CORRETAMENTE <<<")
