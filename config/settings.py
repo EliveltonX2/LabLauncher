@@ -1,4 +1,4 @@
-# config/settings.py (VERSÃO FINAL COM LAZY STORAGE)
+# config/settings.py (VERSÃO FINAL SEGUINDO A DOCUMENTAÇÃO)
 
 import os
 from pathlib import Path
@@ -9,17 +9,13 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-local-key-for-dev-only')
 DEBUG = os.getenv('DEBUG') == 'TRUE'
 ALLOWED_HOSTS = []
 
-# --- CONFIGURAÇÃO DE STORAGE ---
-# Apontamos para a instância 'preguiçosa' que criamos em storages.py
-# Esta é a configuração global que queríamos que funcionasse.
-DEFAULT_FILE_STORAGE = 'config.storages.media_storage'
-
-# Application definition, Middleware, Templates, etc... (mantenha tudo igual)
+# Application definition e Middleware (mantenha igual)
 INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
     'pages.apps.PagesConfig', 'users.apps.UsersConfig', 'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
+    'storages', # Adicione 'storages' aqui como um app
     'ckeditor', 'ckeditor_uploader',
 ]
 MIDDLEWARE = [
@@ -29,7 +25,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware', 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 ROOT_URLCONF = 'config.urls'
-TEMPLATES = [
+TEMPLATES = [ #... Mantenha sua config de TEMPLATES
     {'BACKEND': 'django.template.backends.django.DjangoTemplates','DIRS': [],'APP_DIRS': True,
      'OPTIONS': {'context_processors': ['django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages',],},
     },
@@ -38,11 +34,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 DATABASES = {'default': dj_database_url.config(default=f'sqlite:///{BASE_DIR / "db.sqlite3"}', conn_max_age=600)}
+
 AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},{'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},{'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}]
 
 # Internationalization
 LANGUAGE_CODE = 'pt-br'
-TIME_ZONE = 'America/Sao_Paulo' # Ajustado para um fuso mais comum no Brasil
+TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
@@ -52,10 +49,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# --- ARQUIVOS DE MÍDIA ---
-# As variáveis para o S3. Nossa classe MediaStorage irá lê-las quando necessário.
+# --- LÓGICA FINAL PARA ARQUIVOS DE MÍDIA SEGUINDO A DOCUMENTAÇÃO ---
 USE_S3 = os.getenv('USE_S3') == 'TRUE'
 if USE_S3:
+    # Configurações de credenciais e bucket
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
@@ -63,11 +60,18 @@ if USE_S3:
     AWS_S3_SIGNATURE_VERSION = 's3v4'
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = 'public-read'
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
+    AWS_LOCATION = 'media' # Define a pasta 'media' dentro do bucket
+
+    # APONTA DIRETAMENTE PARA A CLASSE DA BIBLIOTECA
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+    # URL para acessar os arquivos
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{AWS_LOCATION}/'
 else:
-    # Configurações para desenvolvimento local (usadas pelo FileSystemStorage)
+    # Configurações para desenvolvimento local
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Outras configs
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
