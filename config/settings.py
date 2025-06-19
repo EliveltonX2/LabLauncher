@@ -130,11 +130,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ... final do arquivo
-AUTH_USER_MODEL = 'users.CustomUser'
-CKEDITOR_UPLOAD_PATH = "uploads/" # Pasta para onde o CKEditor enviará as imagens
-
-
 # --- CONFIGURAÇÃO AWS S3 ---
 # Esta configuração será usada se a variável de ambiente USE_S3 for 'TRUE'
 if os.getenv('USE_S3') == 'TRUE':

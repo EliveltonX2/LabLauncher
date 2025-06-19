@@ -1,0 +1,14 @@
+# Define o comportamento padrão para todos os arquivos de texto.
+# O Git tentará detectar se é um arquivo de texto e garantirá que os finais de linha sejam LF.
+* text=auto eol=lf
+
+# Garante que arquivos de script do Shell e Python sempre usem LF, que é crucial.
+*.sh text eol=lf
+*.py text eol=lf
+
+# Deixa o Git saber que estes são arquivos binários e não deve mexer neles.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.stl binary
