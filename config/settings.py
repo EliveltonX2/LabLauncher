@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
     # Apps de terceiros
-    'whitenoise.middleware.WhiteNoiseMiddleware', # App do WhiteNoise (melhor prática)
     'ckeditor',
     'ckeditor_uploader',
 ]
