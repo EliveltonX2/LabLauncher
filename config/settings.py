@@ -51,8 +51,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # --- LÓGICA FINAL PARA ARQUIVOS DE MÍDIA SEGUINDO A DOCUMENTAÇÃO ---
 USE_S3 = os.getenv('USE_S3') == 'TRUE'
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
 if USE_S3:
-    # Configurações de credenciais e bucket
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
@@ -60,18 +60,11 @@ if USE_S3:
     AWS_S3_SIGNATURE_VERSION = 's3v4'
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = 'public-read'
-    AWS_LOCATION = 'media' # Define a pasta 'media' dentro do bucket
-
-    # APONTA DIRETAMENTE PARA A CLASSE DA BIBLIOTECA
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-    # URL para acessar os arquivos
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{AWS_LOCATION}/'
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
 else:
     # Configurações para desenvolvimento local
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Outras configs
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
