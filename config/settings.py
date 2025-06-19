@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Nossos apps
+    'pages.apps.PagesConfig', # Adicione esta linha
     'users.apps.UsersConfig',
     'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
