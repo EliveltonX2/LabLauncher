@@ -10,3 +10,5 @@ python manage.py collectstatic --no-input
 
 # "Por fim, prepare o banco de dados com as tabelas mais recentes"
 python manage.py migrate
+
+python manage.py create_superuser_from_env
