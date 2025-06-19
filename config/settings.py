@@ -91,15 +91,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # --- CONFIGURAÇÃO DAS VARIÁVEIS DO S3 ---
 # Estas variáveis só serão usadas pela classe MediaStorage se USE_S3 for TRUE
-USE_S3 = os.getenv('USE_S3') == 'TRUE'
+USE_S3 = os.getenv('USE_S3')
 if USE_S3:
+    # Credenciais
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+    # Configuração do Bucket
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
     AWS_S3_SIGNATURE_VERSION = 's3v4'
-    AWS_S3_ENDPOINT_URL = f'https://s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-    # Ajuste final na URL de Mídia para produção
+
+    # Comportamento dos Arquivos
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = 'public-read' # Para que os arquivos sejam publicamente acessíveis
+
+    # Backend de Armazenamento
+    DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
+
+    # URL para acessar os arquivos (formato padrão)
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
 
 # Outras configs
