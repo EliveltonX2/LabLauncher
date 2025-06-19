@@ -1,6 +1,7 @@
-# config/storages.py
+# config/storages.py (VERSÃO FINAL)
 from storages.backends.s3boto3 import S3Boto3Storage
 
 class S3MediaStorage(S3Boto3Storage):
-    # Nenhuma configuração aqui. Tudo virá do settings.py.
-    pass
+    location = 'media'
+    default_acl = 'public-read'
+    file_overwrite = False
