@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}LabLauncher{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1><a href="{% url 'home' %}">LabLauncher</a></h1>
+        <nav>
+            {% if user.is_authenticated %}
+                <p>Olá, {{ user.username }}!</p>
+                <a href="{% url 'catalog:part-add' %}">Adicionar Peça</a> | 
+                <a href="{% url 'catalog:project-add' %}">Adicionar Projeto</a> | 
+                <form style="display: inline;" method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Sair (Logout)</button>
+                </form>
+            {% else %}
+                <a href="{% url 'account_login' %}">Login</a> |
+                <a href="{% url 'account_signup' %}">Cadastre-se</a>
+            {% endif %}
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>

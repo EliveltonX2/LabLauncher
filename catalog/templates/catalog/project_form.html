@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Novo Projeto</title>
+    {{ form.media }} </head>
+<body>
+    <h2>Adicionar Novo Projeto ao Catálogo</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar Projeto para Revisão</button>
+    </form>
+    <br>
+    <a href="{% url 'home' %}">Voltar para a Home</a>
+</body>
+</html>

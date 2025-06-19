@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Peças - LabLauncher</title>
+    </head>
+<body>
+    <h1>Catálogo de Peças</h1>
+    <p>Explore as peças disponíveis para seus projetos de robótica.</p>
+    <a href="{% url 'catalog:part-add' %}">Adicionar uma Nova Peça</a>
+    <hr>
+
+    {% if parts %}
+        <ul>
+            {% for part in parts %}
+                <li>
+                    <<h3><a href="{% url 'catalog:part-detail' part.pk %}">{{ part.name }}</a></h3>
+                    <p><strong>Categoria:</strong> {{ part.category.name }}</p>
+                    <p><strong>Autor:</strong> {{ part.author.username }}</p>
+                    <p>{{ part.description|truncatewords:30 }}</p>
+                    </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ainda não há peças aprovadas no catálogo. Seja o primeiro a adicionar uma!</p>
+    {% endif %}
+
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; primeira</a>
+                <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+            <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">próxima</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'home' %}">Voltar para a Home</a>
+
+</body>
+</html>

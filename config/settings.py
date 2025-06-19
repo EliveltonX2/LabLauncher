@@ -6,27 +6,42 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-local-key-for-dev-only')
-DEBUG = os.getenv('DEBUG') == 'TRUE'
+DEBUG = not (os.getenv('USE_S3') == 'TRUE')
 ALLOWED_HOSTS = []
 
 # Application definition e Middleware (mantenha igual)
 INSTALLED_APPS = [
-    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
-    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
-    'pages.apps.PagesConfig', 'users.apps.UsersConfig', 'catalog.apps.CatalogConfig',
+    'django.contrib.admin', 
+    'django.contrib.auth', 
+    'django.contrib.contenttypes',
+    'django.contrib.sessions', 
+    'django.contrib.messages', 
+    'django.contrib.staticfiles',
+    'pages.apps.PagesConfig', 
+    'users.apps.UsersConfig', 
+    'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
-    'storages', # Adicione 'storages' aqui como um app
-    'ckeditor', 'ckeditor_uploader',
+    'storages', 
+    'ckeditor', 
+    'ckeditor_uploader',
+    'django.contrib.sites',
+    'allauth', 
+    'allauth.account', 
+    'allauth.socialaccount',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware', 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware', 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware', 'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware', 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 ROOT_URLCONF = 'config.urls'
 TEMPLATES = [ #... Mantenha sua config de TEMPLATES
-    {'BACKEND': 'django.template.backends.django.DjangoTemplates','DIRS': [],'APP_DIRS': True,
+    {'BACKEND': 
+     'django.template.backends.django.DjangoTemplates',
+     'DIRS': [os.path.join(BASE_DIR, 'templates')],
+     'APP_DIRS': True,
      'OPTIONS': {'context_processors': ['django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages',],},
     },
 ]
@@ -36,6 +51,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {'default': dj_database_url.config(default=f'sqlite:///{BASE_DIR / "db.sqlite3"}', conn_max_age=600)}
 
 AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},{'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},{'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}]
+
+# config/settings.py
+AUTHENTICATION_BACKENDS = [
+    # Necessário para logar no admin com username
+    'django.contrib.auth.backends.ModelBackend',
+
+    # Lógicas de autenticação do allauth, como login por e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1 # allauth usa o framework de sites do Django
+
 
 # Internationalization
 LANGUAGE_CODE = 'pt-br'
@@ -70,6 +97,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.CustomUser'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_STORAGE_BACKEND = "django.core.files.storage.DefaultStorage"
+
+# --- CONFIGURAÇÕES DO DJANGO-ALLAUTH ---
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True # Ou False, se você preferir login só por e-mail
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # Permite login com user ou e-mail
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # Força a verificação do e-mail
+
+LOGIN_REDIRECT_URL = 'home' # Para onde vai após o login
+LOGOUT_REDIRECT_URL = 'home' # Para onde vai após o logout
+
+# Para desenvolvimento, os e-mails de verificação serão impressos no console
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # ALLOWED_HOSTS
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')

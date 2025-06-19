@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Projetos - LabLauncher</title>
+</head>
+<body>
+    <h1>Catálogo de Projetos</h1>
+    <a href="{% url 'catalog:project-add' %}">Adicionar um Novo Projeto</a>
+    <hr>
+    {% for project in projects %}
+        <article>
+            <h3><a href="{% url 'catalog:project-detail' project.pk %}">{{ project.title }}</a></h3>
+            <p>Por: {{ project.author.username }}</p>
+            <p>Categoria: {{ project.category.name }}</p>
+        </article>
+        <hr>
+    {% empty %}
+        <p>Ainda não há projetos aprovados no catálogo.</p>
+    {% endfor %}
+    <br>
+    <a href="{% url 'home' %}">Voltar para a Home</a>
+</body>
+</html>

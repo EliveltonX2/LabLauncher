@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ project.title }} - LabLauncher</title>
+</head>
+<body>
+    <a href="{% url 'catalog:project-list' %}">&laquo; Voltar para a lista de projetos</a>
+    <hr>
+    <h1>{{ project.title }}</h1>
+    <p><strong>Por:</strong> {{ project.author.username }} em {{ project.created_at|date:"d/m/Y" }}</p>
+    <p><strong>Categoria:</strong> {{ project.category.name }}</p>
+    <hr>
+
+    <h3>Descrição e Instruções</h3>
+    <div>
+        {{ project.description|safe }}
+    </div>
+
+    <hr>
+
+    <h3>Peças Necessárias</h3>
+    {% if project.parts_used.all %}
+        <ul>
+            {% for part in project.parts_used.all %}
+                <li>
+                    <a href="{% url 'catalog:part-detail' part.pk %}">{{ part.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhuma peça específica foi listada para este projeto.</p>
+    {% endif %}
+</body>
+</html>

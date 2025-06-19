@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ part.name }} - LabLauncher</title>
+    </head>
+<body>
+    <a href="{% url 'catalog:part-list' %}">&laquo; Voltar para a lista de peças</a>
+    <hr>
+
+    <h1>{{ part.name }}</h1>
+    <p><strong>Enviado por:</strong> {{ part.author.username }} em {{ part.created_at|date:"d/m/Y" }}</p>
+    <p><strong>Categoria:</strong> {{ part.category.name }}</p>
+
+    <hr>
+
+    <h3>Descrição</h3>
+    <p>{{ part.description|linebreaksbr }}</p>
+
+    <hr>
+
+    <h2>Download</h2>
+    <a href="{{ part.stl_file.url }}" download>
+        Baixar Arquivo STL: {{ part.stl_file.name }}
+    </a>
+
+</body>
+</html>
