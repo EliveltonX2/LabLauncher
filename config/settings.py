@@ -118,4 +118,4 @@ if not USE_S3: # Adiciona localhost em desenvolvimento
     ALLOWED_HOSTS.append('localhost')
 
 # Teste de logging (pode remover depois)
-logger.warning(">>> NOVA CONFIGURACAO DE SETTINGS CARREGADA <<<")
+logging.warning(">>> NOVA CONFIGURACAO DE SETTINGS CARREGADA <<<")
