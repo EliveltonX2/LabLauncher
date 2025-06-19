@@ -130,39 +130,44 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- CONFIGURAÇÃO AWS S3 ---
-# Esta configuração será usada se a variável de ambiente USE_S3 for 'TRUE'
+# --- CONFIGURAÇÃO DE ARQUIVOS ESTÁTICOS E MÍDIA (CORRIGIDO) ---
+
+# URL base para servir arquivos estáticos (CSS, JavaScript, Imagens)
+STATIC_URL = '/static/'
+# Caminho no sistema de arquivos onde o `collectstatic` vai juntar todos os arquivos estáticos para o deploy.
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Pastas adicionais onde o Django deve procurar por arquivos estáticos.
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# URL base para servir arquivos de mídia enviados pelos usuários
+MEDIA_URL = '/media/'
+# Caminho no sistema de arquivos para os arquivos de mídia em desenvolvimento local
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Configurações de Storage que mudam entre Desenvolvimento e Produção (Render)
 if os.getenv('USE_S3') == 'TRUE':
     # Credenciais
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-    
     # Configurações do Bucket
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'sa-east-1') # Default para São Paulo
+    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'sa-east-1')
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     
-    # Parâmetros dos arquivos
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400', # Cache de 1 dia para os arquivos
-    }
+    # Sobrescreve as URLs para apontar para o S3
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     
-    # Localização dos arquivos de media e static dentro do bucket
-    AWS_LOCATION_MEDIA = 'media'
-    AWS_LOCATION_STATIC = 'static'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION_MEDIA}/'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION_STATIC}/'
-    
-    # Storage Backends
+    # Define os backends de armazenamento para S3
     DEFAULT_FILE_STORAGE = 'LabLauncher.storages.MediaStorage'
     STATICFILES_STORAGE = 'LabLauncher.storages.StaticStorage'
-else:
-    # Configurações para desenvolvimento local (sem S3)
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Configurações do CKEditor que apontam para o storage correto
+
+# Configurações do CKEditor
 CKEDITOR_UPLOAD_PATH = "uploads/"
+# Garante que o CKEditor use o storage correto (S3 em produção, local em dev)
 CKEDITOR_STORAGE_BACKEND = "django.core.files.storage.DefaultStorage"
