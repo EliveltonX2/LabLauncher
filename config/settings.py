@@ -51,7 +51,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # --- LÓGICA FINAL PARA ARQUIVOS DE MÍDIA SEGUINDO A DOCUMENTAÇÃO ---
 USE_S3 = os.getenv('USE_S3') == 'TRUE'
-USE_S3 = os.getenv('USE_S3') == 'TRUE'
 if USE_S3:
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -79,3 +78,5 @@ if RENDER_EXTERNAL_HOSTNAME:
 if not USE_S3:
     ALLOWED_HOSTS.append('127.0.0.1')
     ALLOWED_HOSTS.append('localhost')
+
+DEFAULT_FILE_STORAGE = 'config.storages.media_storage'

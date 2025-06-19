@@ -9,7 +9,6 @@ class CustomUser(AbstractUser):
     # Nossos campos customizados
     profile_picture = models.ImageField(
         upload_to='profile_pics/',
-        storage=s3_storage,
         null=True,
         blank=True,
         verbose_name='Foto do Perfil'
