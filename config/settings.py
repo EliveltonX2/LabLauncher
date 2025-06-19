@@ -133,3 +133,30 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # Configurações do CKEditor
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_STORAGE_BACKEND = "django.core.files.storage.DefaultStorage"
+
+# config/settings.py (adicionar no final do arquivo)
+
+# --- CONFIGURAÇÃO DE LOGS PARA DEBUG DO S3 ---
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'boto3': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'botocore': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'storages': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
