@@ -1,8 +1,8 @@
 # pages/urls.py
 from django.urls import path
-from .views import home_view
+from .views import *
 
 urlpatterns = [
-    # Quando a URL for vazia (a página inicial), chame a função home_view
     path('', home_view, name='home'),
+    path('dashboard/', dashboard_view, name='dashboard'), # <-- Adicione esta linha
 ]

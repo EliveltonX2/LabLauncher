@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Meu Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>Meu Dashboard</h2>
+            <p class="text-muted">Bem-vindo de volta, {{ user.username }}!</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            {# O allauth gerencia a mudança de senha e e-mail em páginas separadas #}
+            <a href="{% url 'account_change_password' %}" class="btn btn-secondary btn-sm">Mudar Senha</a>
+            <a href="{% url 'account_email' %}" class="btn btn-secondary btn-sm">Gerenciar E-mail</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-light">
+                <div class="card-header">
+                    <h3>Minhas Peças Enviadas</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Aguardando Revisão</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for part in parts_in_review %}
+                            <li class="list-group-item bg-dark text-light">{{ part.name }}</li>
+                        {% empty %}
+                            <li class="list-group-item bg-dark text-light fst-italic">Nenhuma peça aguardando revisão.</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <h5 class="card-title text-success">Peças Aprovadas</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for part in parts_approved %}
+                            <li class="list-group-item bg-dark text-light"><a href="{% url 'catalog:part-detail' part.pk %}">{{ part.name }}</a></li>
+                        {% empty %}
+                            <li class="list-group-item bg-dark text-light fst-italic">Nenhuma peça aprovada ainda.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                     <a href="{% url 'catalog:part-add' %}" class="btn btn-primary">Adicionar Nova Peça</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-light">
+                <div class="card-header">
+                    <h3>Meus Projetos Enviados</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Aguardando Revisão</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for project in projects_in_review %}
+                             <li class="list-group-item bg-dark text-light">{{ project.title }}</li>
+                        {% empty %}
+                            <li class="list-group-item bg-dark text-light fst-italic">Nenhum projeto aguardando revisão.</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <h5 class="card-title text-success">Projetos Aprovados</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for project in projects_approved %}
+                            <li class="list-group-item bg-dark text-light"><a href="{% url 'catalog:project-detail' project.pk %}">{{ project.title }}</a></li>
+                        {% empty %}
+                            <li class="list-group-item bg-dark text-light fst-italic">Nenhum projeto aprovado ainda.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                 <div class="card-footer">
+                     <a href="{% url 'catalog:project-add' %}" class="btn btn-primary">Adicionar Novo Projeto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

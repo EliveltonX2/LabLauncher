@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Fila de Curadoria{% endblock %}
+
+{% block content %}
+<h2>Fila de Curadoria</h2>
+<p>Itens enviados pela comunidade aguardando sua revisão.</p>
+<hr>
+
+<h3>Peças Pendentes ({{ pending_parts.count }})</h3>
+{% if pending_parts %}
+    <ul>
+        {% for part in pending_parts %}
+        <li>
+            <strong>{{ part.name }}</strong> (por {{ part.author.username }})
+            - <a href="{% url 'catalog:part-detail' part.pk %}" target="_blank">Ver</a>
+            - <a href="{% url 'admin:catalog_part_change' part.pk %}" target="_blank">Revisar no Admin</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhuma peça aguardando revisão. Bom trabalho!</p>
+{% endif %}
+
+<hr>
+
+<h3>Projetos Pendentes ({{ pending_projects.count }})</h3>
+{% if pending_projects %}
+    <ul>
+        {% for project in pending_projects %}
+        <li>
+            <strong>{{ project.title }}</strong> (por {{ project.author.username }})
+            - <a href="{% url 'catalog:project-detail' project.pk %}" target="_blank">Ver</a>
+            - <a href="{% url 'admin:catalog_project_change' project.pk %}" target="_blank">Revisar no Admin</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhum projeto aguardando revisão. Bom trabalho!</p>
+{% endif %}
+{% endblock %}

@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Bem-vindo ao LabLauncher!</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f3f3e0; color: #183b4e; }
-        h1 { color: #27548a; }
-    </style>
-</head>
-<body>
-    <h1>Bem-vindo ao LabLauncher!</h1>
-    <p>A sua plataforma de robótica da Kaizo.</p>
-    <p>O deploy foi um sucesso! O site está no ar.</p>
-    <br><br>
-    <h2>Explorar Catálogos</h2>
-    <p><a href="{% url 'catalog:part-list' %}">Ver Catálogo de Peças</a></p>
-    <p><a href="{% url 'catalog:project-list' %}">Ver Catálogo de Projetos</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Bem-vindo ao LabLauncher{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <h1 class="display-3">Construa o Futuro.<br>Peça por Peça.</h1>
+    <p class="lead col-lg-8 mx-auto">
+        O catálogo aberto de peças e projetos de robótica para estudantes, hobbistas e criadores.
+    </p>
+    <hr class="my-4">
+    <p>Pronto para começar?</p>
+    <a class="btn btn-accent btn-lg" href="{% url 'catalog:project-list' %}" role="button">Explorar Projetos</a>
+    <a class="btn btn-outline-light btn-lg" href="{% url 'catalog:part-list' %}" role="button">Explorar Peças</a>
+</div>
+{% endblock %}

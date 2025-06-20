@@ -1,35 +1,35 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ project.title }} - LabLauncher</title>
-</head>
-<body>
-    <a href="{% url 'catalog:project-list' %}">&laquo; Voltar para a lista de projetos</a>
-    <hr>
-    <h1>{{ project.title }}</h1>
-    <p><strong>Por:</strong> {{ project.author.username }} em {{ project.created_at|date:"d/m/Y" }}</p>
-    <p><strong>Categoria:</strong> {{ project.category.name }}</p>
-    <hr>
+projects{% extends "base.html" %}
 
-    <h3>Descrição e Instruções</h3>
-    <div>
-        {{ project.description|safe }}
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card text-bg-dark">
+                <div class="card-body text-center" style="height: 500px; background-color: #444;">
+                    <p class="lead my-5">Visualizador 3D em breve...</p>
+                    <img src="https://via.placeholder.com/400x300.png?text={{ project.name }}" class="img-fluid" alt="{{ project.name }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <h1>{{ project.name }}</h1>
+            <p class="text-muted">Enviado por {{ project.author.username }} em {{ project.created_at|date:"d/m/Y" }}</p>
+            <p><strong>Categoria:</strong> <span class="badge bg-secondary">{{ project.category.name }}</span></p>
+            
+            <hr>
+
+            <h3>Descrição</h3>
+            <p>{{ project.description|linebreaksbr }}</p>
+
+            <div class="d-grid gap-2 mt-4">
+                <a href="{{ project.stl_file.url }}" class="btn btn-accent btn-lg" download>
+                    Baixar Arquivo STL
+                </a>
+            </div>
+        </div>
     </div>
-
-    <hr>
-
-    <h3>Peças Necessárias</h3>
-    {% if project.parts_used.all %}
-        <ul>
-            {% for part in project.parts_used.all %}
-                <li>
-                    <a href="{% url 'catalog:part-detail' part.pk %}">{{ part.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Nenhuma peça específica foi listada para este projeto.</p>
-    {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}

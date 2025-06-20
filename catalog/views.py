@@ -4,6 +4,8 @@ from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from .models import Part, Project, Category
 from django.urls import reverse_lazy
 from .models import *
 from .forms import *
@@ -28,15 +30,44 @@ class PartCreateView(LoginRequiredMixin, CreateView):
 class PartListView(ListView):
     model = Part
     template_name = 'catalog/part_list.html'
-    context_object_name = 'parts' # Nome da variável no template
-    paginate_by = 10 # (Opcional) Mostra 10 peças por página
+    context_object_name = 'parts'
+    paginate_by = 10
 
     def get_queryset(self):
         """
-        Sobrescreve o método padrão para buscar apenas as peças
-        com status 'approved'.
+        Esta é a função principal. Ela constrói a busca no banco de dados.
         """
-        return Part.objects.filter(status='approved').order_by('-created_at')
+        # Começa com todos os objetos aprovados
+        queryset = super().get_queryset().filter(status='approved')
+
+        # Pega os parâmetros da URL
+        search_query = self.request.GET.get('q')
+        category_query = self.request.GET.get('category')
+
+        # Filtro de busca por texto
+        if search_query:
+            # Usa Q objects para fazer uma busca OR no nome E na descrição
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) | 
+                Q(description__icontains=search_query)
+            )
+
+        # Filtro por categoria
+        if category_query:
+            queryset = queryset.filter(category__id=category_query)
+
+        return queryset.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        """
+        Esta função adiciona dados extras ao contexto que será enviado ao template.
+        """
+        # Pega o contexto existente da classe pai
+        context = super().get_context_data(**kwargs)
+        # Adiciona a lista de todas as categorias ao contexto
+        context['categories'] = Category.objects.all()
+        return context
+
     
 
 class PartDetailView(DetailView):
@@ -63,9 +94,37 @@ class ProjectListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Project.objects.filter(status='approved').order_by('-created_at')
+        """
+        Adiciona a lógica de busca e filtro para os projetos.
+        """
+        queryset = super().get_queryset().filter(status='approved')
+
+        search_query = self.request.GET.get('q')
+        category_query = self.request.GET.get('category')
+
+        if search_query:
+            # Busca no título E na descrição do projeto
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) | 
+                Q(description__icontains=search_query)
+            )
+
+        if category_query:
+            queryset = queryset.filter(category__id=category_query)
+
+        return queryset.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        """
+        Adiciona a lista de categorias ao contexto para o dropdown de filtro.
+        """
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 class ProjectDetailView(DetailView):
     model = Project
     template_name = 'catalog/project_detail.html'
     context_object_name = 'project'
+
+

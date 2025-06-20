@@ -1,0 +1,38 @@
+/* static/css/custom.css */
+
+/* Importa as fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Lato:wght@400;700&display=swap');
+
+body {
+    background-color: #183b4e; /* Nosso azul petróleo escuro como fundo */
+    color: #f3f3e0; /* Nosso branco osso para o texto padrão */
+    font-family: 'Lato', sans-serif; /* Fonte padrão para parágrafos */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Exo 2', sans-serif; /* Fonte para todos os títulos */
+    color: #f3f3e0;
+}
+
+a {
+    color: #27548a; /* Nosso azul de ação para links */
+    text-decoration: none; /* Remove o sublinhado padrão */
+}
+
+a:hover {
+    color: #4a88d4; /* Um azul um pouco mais claro para o hover */
+}
+
+/* Estilo customizado para nosso botão de destaque */
+.btn-accent {
+    background-color: #dda853;
+    border-color: #dda853;
+    color: #183b4e; /* Texto escuro para contrastar com o fundo dourado */
+    font-weight: bold;
+}
+
+.btn-accent:hover {
+    background-color: #e6b86a;
+    border-color: #e6b86a;
+    color: #183b4e;
+}
