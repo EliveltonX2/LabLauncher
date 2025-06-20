@@ -8,7 +8,7 @@ class PartForm(forms.ModelForm):
         model = Part
         # Define os campos que aparecerão no formulário.
         # 'author' e 'status' serão definidos automaticamente na view.
-        fields = ['name', 'description', 'category', 'stl_file']
+        fields = ['name', 'description', 'category', 'stl_file', 'thumbnail',]
 
         # (Opcional) Adiciona widgets para customizar a aparência dos campos
         widgets = {
@@ -30,7 +30,7 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         # Incluímos os campos que o usuário deve preencher
-        fields = ['title', 'description', 'category', 'parts_used']
+        fields = ['title', 'description', 'category', 'parts_used', 'thumbnail',]
 
         # O campo 'description' usará o CKEditor automaticamente
         # porque o definimos como RichTextUploadingField no models.py.

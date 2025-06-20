@@ -32,6 +32,12 @@ class Category(models.Model):
 
 class Part(models.Model):
     STATUS_CHOICES = (('in_review', 'Em Revisão'), ('approved', 'Aprovado'), ('rejected', 'Rejeitado'))
+    thumbnail = models.ImageField(
+        upload_to='part_thumbnails/', # Pasta dentro de 'media' onde as imagens serão salvas
+        verbose_name='Thumbnail',
+        null=True, # O campo é opcional
+        blank=True # O campo pode ser deixado em branco no formulário
+    )
     name = models.CharField(max_length=200, verbose_name='Nome da Peça')
     description = models.TextField(verbose_name='Descrição')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Categoria')
@@ -54,6 +60,12 @@ class Part(models.Model):
 class Project(models.Model):
     # ... (O modelo Project pode continuar igual) ...
     STATUS_CHOICES = (('in_review', 'Em Revisão'), ('approved', 'Aprovado'), ('rejected', 'Rejeitado'))
+    thumbnail = models.ImageField(
+        upload_to='part_thumbnails/', # Pasta dentro de 'media' onde as imagens serão salvas
+        verbose_name='Thumbnail',
+        null=True, # O campo é opcional
+        blank=True # O campo pode ser deixado em branco no formulário
+    )
     title = models.CharField(max_length=255, verbose_name='Título do Projeto')
     description = RichTextUploadingField(verbose_name='Descrição Detalhada')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, verbose_name='Autor')

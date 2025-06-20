@@ -1,22 +1,33 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Adicionar Nova Peça</title>
-    </head>
-<body>
-    <h2>Adicionar Nova Peça ao Catálogo</h2>
+{% extends "base.html" %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+{% block title %}Adicionar Nova Peça{% endblock %}
 
-        {{ form.as_p }}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-        <button type="submit">Enviar Peça para Revisão</button>
-    </form>
+            <div class="card text-bg-dark border-secondary">
+                <div class="card-header">
+                    <h2 class="mb-0">Adicionar Nova Peça ao Catálogo</h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-muted">Preencha os detalhes abaixo para submeter sua peça para revisão pela nossa equipe de curadores.</p>
+                    <hr>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-    <br>
-    <a href="{% url 'home' %}">Voltar para a Home</a>
+                        {{ form.as_p }}
 
-</body>
-</html>
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-accent btn-lg">Enviar Peça para Revisão</button>
+                            <a href="{% url 'catalog:part-list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

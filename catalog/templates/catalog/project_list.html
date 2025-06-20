@@ -34,7 +34,13 @@
         {% for project in projects %}
         <div class="col">
             <div class="card h-100 text-bg-dark">
-                <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="{{ project.name }}">
+                
+                {% if project.thumbnail %}
+                    <img src="{{ project.thumbnail.url }}" class="card-img-top" alt="{{ project.name }}">
+                {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="Placeholder">
+                {% endif %}
+
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">
                         <a href="{% url 'catalog:project-detail' project.pk %}" class="stretched-link">{{ project.name }}</a>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ part.name }}{% endblock %}
 
@@ -6,11 +7,9 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-7">
-            <div class="card text-bg-dark">
-                <div class="card-body text-center" style="height: 500px; background-color: #444;">
-                    <p class="lead my-5">Visualizador 3D em breve...</p>
-                    <img src="https://via.placeholder.com/400x300.png?text={{ part.name }}" class="img-fluid" alt="{{ part.name }}">
-                </div>
+            <canvas id="stl-viewer" class="w-100" style="height: 500px; background-color: #2d2d2d; border-radius: 8px;"></canvas>
+            <div class="text-center mb-2 text-muted small">
+                Controles: Rotacionar (arrastar), Zoom (roda do mouse), Pan (arrastar com botão direito).
             </div>
         </div>
 
@@ -18,12 +17,9 @@
             <h1>{{ part.name }}</h1>
             <p class="text-muted">Enviado por {{ part.author.username }} em {{ part.created_at|date:"d/m/Y" }}</p>
             <p><strong>Categoria:</strong> <span class="badge bg-secondary">{{ part.category.name }}</span></p>
-            
             <hr>
-
             <h3>Descrição</h3>
             <p>{{ part.description|linebreaksbr }}</p>
-
             <div class="d-grid gap-2 mt-4">
                 <a href="{{ part.stl_file.url }}" class="btn btn-accent btn-lg" download>
                     Baixar Arquivo STL
@@ -32,4 +28,94 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
+    import { STLLoader } from 'https://unpkg.com/three@0.165.0/examples/jsm/loaders/STLLoader.js';
+    import { OrbitControls } from 'https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js';
+
+    // --- VARIÁVEIS E INICIALIZAÇÃO ---
+    const stlUrl = "{{ part.stl_file.url }}";
+    const canvas = document.querySelector('#stl-viewer');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x09171f);
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    
+
+    const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // --- ILUMINAÇÃO (Opcional para Matcap, mas bom ter) ---
+    // A iluminação da cena não afeta um material Matcap, pois a luz já está "assada" na textura.
+    // Mas podemos mantê-la para futuros materiais.
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(2, 2, 2).normalize();
+    //scene.add(directionalLight);
+
+    // --- LÓGICA DO MATCAP ---
+    const textureLoader = new THREE.TextureLoader();
+    // 1. Carrega a nossa imagem de textura Matcap
+    // IMPORTANTE: Troque 'clay_shiny.png' pelo nome do arquivo que você baixou!
+    const matcapTexture = textureLoader.load("{% static 'images/matcaps/matcap7.png' %}");
+
+    // 2. Cria o material Matcap com a textura
+    const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
+
+
+    // --- CARREGADOR DE STL ---
+    const loader = new STLLoader();
+    loader.load(stlUrl, function (geometry) {
+        // 3. Cria a malha (mesh) usando a geometria do STL e o nosso novo material Matcap
+        const mesh = new THREE.Mesh(geometry, material);
+
+        // O resto do código para centralizar e ajustar a câmera continua igual
+        const box = new THREE.Box3().setFromObject(mesh);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
+        mesh.position.sub(center);
+        scene.add(mesh);
+
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const fov = camera.fov * (Math.PI / 180);
+        const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+        camera.position.set(cameraZ, cameraZ / 1.5, cameraZ);
+        camera.far = maxDim * 100;
+        camera.near = maxDim / 100;
+        camera.updateProjectionMatrix();
+        controls.target.copy(mesh.position);
+        controls.update();
+    });
+
+    // --- LOOP DE ANIMAÇÃO ---
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera); // Não precisamos do composer para o Matcap
+    }
+    animate();
+
+    // --- RESPONSIVIDADE ---
+    window.addEventListener('resize', () => {
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    });
+</script>
+    
 {% endblock %}
