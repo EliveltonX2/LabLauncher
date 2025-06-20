@@ -87,6 +87,9 @@ if USE_S3:
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = 'public-read'
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
+    AWS_QUERYSTRING_AUTH = False
+    AWS_LOCATION = 'media'
+    
 else:
     # Configurações para desenvolvimento local
     MEDIA_URL = '/media/'
