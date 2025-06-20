@@ -1,14 +1,21 @@
 # users/models.py (CÓDIGO CORRIGIDO)
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.core.files.storage import FileSystemStorage
 from config.storages import S3MediaStorage
 
-s3_storage = S3MediaStorage()
+# --- LÓGICA DE SELEÇÃO DE STORAGE ---
+if os.getenv('USE_S3') == 'TRUE':
+    storage_para_usar = S3MediaStorage()
+else:
+    storage_para_usar = FileSystemStorage()
 
 class CustomUser(AbstractUser):
     # Nossos campos customizados
     profile_picture = models.ImageField(
         upload_to='profile_pics/',
+        storage=storage_para_usar,
         null=True,
         blank=True,
         verbose_name='Foto do Perfil'

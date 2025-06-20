@@ -89,11 +89,13 @@ if USE_S3:
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
     AWS_QUERYSTRING_AUTH = False
     AWS_LOCATION = 'media'
+    CKEDITOR_STORAGE_BACKEND = 'config.storages.S3MediaStorage'
     
 else:
     # Configurações para desenvolvimento local
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    CKEDITOR_STORAGE_BACKEND = 'django.core.files.storage.DefaultStorage'
 
 # Outras configs
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

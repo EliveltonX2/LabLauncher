@@ -34,6 +34,7 @@ class Part(models.Model):
     STATUS_CHOICES = (('in_review', 'Em Revisão'), ('approved', 'Aprovado'), ('rejected', 'Rejeitado'))
     thumbnail = models.ImageField(
         upload_to='part_thumbnails/', # Pasta dentro de 'media' onde as imagens serão salvas
+        storage=storage_para_usar,
         verbose_name='Thumbnail',
         null=True, # O campo é opcional
         blank=True # O campo pode ser deixado em branco no formulário
@@ -62,6 +63,7 @@ class Project(models.Model):
     STATUS_CHOICES = (('in_review', 'Em Revisão'), ('approved', 'Aprovado'), ('rejected', 'Rejeitado'))
     thumbnail = models.ImageField(
         upload_to='part_thumbnails/', # Pasta dentro de 'media' onde as imagens serão salvas
+        storage=storage_para_usar,
         verbose_name='Thumbnail',
         null=True, # O campo é opcional
         blank=True # O campo pode ser deixado em branco no formulário
