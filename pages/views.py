@@ -1,7 +1,10 @@
 # pages/views.py
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required # Para proteger a view
-from catalog.models import Part, Project # Para buscar os dados
+from catalog.models import Part, Project
+from .models import StaticPage # Para buscar os dados
+from django.views.generic import TemplateView
+from django.views.generic import DetailView
 
 def home_view(request):
     return render(request, 'pages/home.html', {})
@@ -25,3 +28,11 @@ def dashboard_view(request):
     }
 
     return render(request, 'pages/dashboard.html', context)
+
+class StaticPageView(DetailView):
+    model = StaticPage
+    template_name = "pages/static_page_detail.html"
+    context_object_name = "page"
+    # Diz à view para buscar a página pelo campo 'slug' na URL, não pelo ID.
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'

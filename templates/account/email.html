@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar E-mails{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card text-bg-dark border-secondary">
+                <div class="card-header">
+                    <h2 class="mb-0">Gerenciar E-mails</h2>
+                </div>
+                <div class="card-body">
+                    {% if user.emailaddress_set.all %}
+                        <p>Os seguintes e-mails estão associados à sua conta:</p>
+
+                        <form action="{% url 'account_email' %}" class="email_list" method="post">
+                            {% csrf_token %}
+                            <fieldset class="blockLabels">
+                                {% for emailaddress in user.emailaddress_set.all %}
+                                <div class="mb-3 p-2 border rounded {% if emailaddress.primary %}border-warning{% endif %}">
+                                    <div class="form-check">
+                                        <input id="email_radio_{{forloop.counter}}" type="radio" name="email" value="{{emailaddress.email}}" {% if emailaddress.primary %}checked="checked"{%endif %}>
+                                        <label for="email_radio_{{forloop.counter}}" class="form-check-label">
+                                            {{ emailaddress.email }}
+                                            {% if emailaddress.verified %}
+                                                <span class="badge bg-success">Verificado</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Não Verificado</span>
+                                            {% endif %}
+                                            {% if emailaddress.primary %}
+                                                <span class="badge bg-warning text-dark">Primário</span>
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                                <div class="d-flex gap-2 mt-3">
+                                    <button class="btn btn-secondary" type="submit" name="action_primary" >Tornar Primário</button>
+                                    <button class="btn btn-secondary" type="submit" name="action_send" >Reenviar Verificação</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    {% else %}
+                        <p><strong>Atenção:</strong> Você ainda não tem um endereço de e-mail associado à sua conta.</p>
+                    {% endif %}
+
+                    <hr>
+
+                    <h4>Adicionar Novo E-mail</h4>
+                    <form method="post" action="{% url 'account_email' %}" class="add_email">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button name="action_add" type="submit" class="btn btn-primary">Adicionar E-mail</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

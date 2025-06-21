@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig', 
     'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
+    'comments.apps.CommentsConfig',
     'storages', 
     'ckeditor', 
     'ckeditor_uploader',

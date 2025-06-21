@@ -28,6 +28,59 @@
         </div>
     </div>
 </div>
+
+<hr class="my-5">
+
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        
+        <div class="card text-bg-dark border-secondary">
+            <div class="card-header">
+                <h3 class="mb-0">Comentários ({{ comments.count }})</h3>
+            </div>
+            <div class="card-body">
+                {% if user.is_authenticated %}
+                    <div class="d-flex align-items-start mb-4">
+                        {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="Sua foto" width="48" height="48" class="rounded me-3" style="object-fit: cover;">
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle me-3 text-secondary" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
+                        {% endif %}
+                        <form method="post" action="" class="w-100">
+                             {% csrf_token %}
+                             {{ comment_form.body }}
+                             <button type="submit" class="btn btn-primary btn-sm mt-2">Enviar Comentário</button>
+                        </form>
+                    </div>
+                    <hr>
+                {% else %}
+                    <p><a href="{% url 'account_login' %}?next={{ request.path }}">Faça login</a> para deixar um comentário.</p>
+                {% endif %}
+
+                {% for comment in comments %}
+                    <div class="d-flex align-items-start mb-3">
+                        {% if comment.author.profile_picture %}
+                            <img src="{{ comment.author.profile_picture.url }}" alt="Foto de {{ comment.author.username }}" width="48" height="48" class="rounded me-3" style="object-fit: cover;">
+                        {% else %}
+                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle me-3 text-secondary" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
+                        {% endif %}
+                        <div class="w-100">
+                            <strong>{{ comment.author.username }}</strong>
+                            <small class="text-muted ms-2">{{ comment.created_at|timesince }} atrás</small>
+                            <p class="mb-0 mt-1 bg-dark p-2 rounded">{{ comment.body|linebreaksbr }}</p>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}<hr class="border-secondary">{% endif %}
+                {% empty %}
+                    <p class="fst-italic">Ainda não há comentários. Seja o primeiro a comentar!</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+<br><br>
+
 {% endblock %}
 
 {% block scripts %}

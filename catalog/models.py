@@ -2,6 +2,7 @@
 
 import os
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -54,6 +55,10 @@ class Part(models.Model):
         verbose_name = 'Peça'
         verbose_name_plural = 'Peças'
         ordering = ['-created_at']
+
+    def get_absolute_url(self):
+        return reverse('catalog:part-detail', kwargs={'pk': self.pk})
+    
     def __str__(self):
         return self.name
 
@@ -80,5 +85,9 @@ class Project(models.Model):
         verbose_name = 'Projeto'
         verbose_name_plural = 'Projetos'
         ordering = ['-created_at']
+
+    def get_absolute_url(self):
+        return reverse('catalog:project-detail', kwargs={'pk': self.pk})
+
     def __str__(self):
         return self.title
