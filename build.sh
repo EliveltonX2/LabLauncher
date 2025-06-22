@@ -2,26 +2,24 @@
 # exit on error
 set -o errexit
 
-echo "--- INICIANDO BUILD SCRIPT DE DEBUG (v2 Corrigido) ---"
+echo "--- INICIANDO BUILD SCRIPT COM RESET DE MIGRATIONS ---"
 
-echo "--- Passo 1: Instalando dependencias ---"
 pip install -r requirements.txt
-
-echo "--- Passo 2: Rodando collectstatic ---"
 python manage.py collectstatic --no-input --clear
 
-echo "--- Passo 3: VERIFICANDO STATUS DAS MIGRACOES (ANTES) ---"
-# CORREÇÃO: Removido o --no-input
-python manage.py showmigrations
+# --- O RESET ---
+# Passo 1: Diz ao banco de produção para "esquecer" o histórico de migrações do app 'catalog'.
+# Isso NÃO deleta as tabelas, apenas limpa os registros.
+echo "--- Forçando reset do histórico de migrações para o app 'catalog' ---"
+python manage.py migrate catalog zero --fake
 
-echo "--- Passo 4: EXECUTANDO O MIGRATE ---"
-python manage.py migrate --no-input
+# Passo 2: Agora, roda o migrate normalmente.
+# Ele encontrará o nosso novo arquivo 0001_initial.py e o aplicará,
+# criando as tabelas que faltam (PartCategory, etc.).
+echo "--- Aplicando todas as migrações a partir de um estado limpo ---"
+python manage.py migrate
 
-echo "--- Passo 5: VERIFICANDO STATUS DAS MIGRACOES (DEPOIS) ---"
-# CORREÇÃO: Removido o --no-input
-python manage.py showmigrations
-
-echo "--- Passo 6: Criando superusuario ---"
+# Passo 3: Cria o superusuário.
 python manage.py create_superuser_from_env
 
-echo "--- BUILD SCRIPT CONCLUIDO COM SUCESSO! ---"
+echo "--- BUILD SCRIPT CONCLUÍDO ---"
