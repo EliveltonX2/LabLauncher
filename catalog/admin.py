@@ -51,8 +51,9 @@ class PartAdmin(admin.ModelAdmin):
     """
     Configuração de admin para o modelo Part.
     """
-    list_display = ('name', 'author', 'category', 'status', 'created_at')
-    list_filter = ('status', 'category', 'author')
+    list_display = ('name', 'author', 'category', 'status', 'is_hall_of_fame')
+    list_filter = ('status', 'category', 'author', 'is_hall_of_fame') 
+    list_editable = ('status', 'is_hall_of_fame') 
     search_fields = ('name', 'description', 'author__username')
     actions = [duplicate_parts]
 
@@ -61,6 +62,7 @@ class ProjectAdmin(admin.ModelAdmin):
     """
     Configuração de admin para o modelo Project.
     """
-    list_display = ('title', 'author', 'category', 'status', 'created_at')
-    list_filter = ('status', 'category', 'author')
+    list_display = ('title', 'author', 'category', 'status', 'created_at', 'is_hall_of_fame')
+    list_filter = ('status', 'category', 'author', 'is_hall_of_fame')
+    list_editable = ('status', 'is_hall_of_fame')
     search_fields = ('title', 'description', 'author__username')

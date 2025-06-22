@@ -23,10 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('users/', include('users.urls', namespace='users')),
-    path('catalog/', include('catalog.urls', namespace='catalog')),
-    path('', include('pages.urls')),
     path('curation/', include('submission.urls', namespace='submission')),
+    path('catalog/', include('catalog.urls', namespace='catalog')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('', include('pages.urls')),
 
     
 ]

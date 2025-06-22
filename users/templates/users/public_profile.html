@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Perfil de {{ profile_user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card text-bg-dark border-secondary p-4 mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center">
+                {% if profile_user.profile_picture %}
+                    <img src="{{ profile_user.profile_picture.url }}" alt="Foto de {{ profile_user.username }}" width="150" height="150" class="rounded img-thumbnail" style="object-fit: cover;">
+                {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-person- rounded text-secondary" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
+                {% endif %}
+            </div>
+            <div class="col-md-9">
+                <h1 class="display-5">{{ profile_user.username }}</h1>
+                <p class="lead text-muted">Membro desde {{ profile_user.date_joined|date:"F Y" }}</p>
+                <div class="d-flex gap-4">
+                    <div><strong>{{ parts_count }}</strong> Peça(s) Aprovada(s)</div>
+                    <div><strong>{{ projects_count }}</strong> Projeto(s) Aprovado(s)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if approved_projects %}
+    <h3>Projetos de {{ profile_user.username }}</h3><hr>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+        {% for project in approved_projects %}
+            {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if approved_parts %}
+    <h3>Peças de {{ profile_user.username }}</h3><hr>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mb-5">
+        {% for part in approved_parts %}
+             {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

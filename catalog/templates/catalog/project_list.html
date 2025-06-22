@@ -45,7 +45,7 @@
                     <h5 class="card-title">
                         <a href="{% url 'catalog:project-detail' project.pk %}" class="stretched-link">{{ project.name }}</a>
                     </h5>
-                    <p class="card-text text-muted">por {{ project.author.username }}</p>
+                    <p class="card-text text-muted">por <a href="{% url 'users:public-profile' project.author.username %}">{{ project.author.username }}</a></p>
                 </div>
             </div>
         </div>

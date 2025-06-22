@@ -2,6 +2,7 @@
 
 import os
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -20,13 +21,27 @@ else:
     print("--- LOG DE DEBUG (models.py): Usando FileSystemStorage ---")
 
 
-class Category(models.Model):
+class Category(MPTTModel): # Herda de MPTTModel em vez de models.Model
     name = models.CharField(max_length=100, unique=True, verbose_name='Nome')
     slug = models.SlugField(max_length=120, unique=True, help_text='Versão do nome otimizada para URLs.')
+
+    # 3. Adiciona o campo de hierarquia
+    parent = TreeForeignKey(
+        'self', 
+        on_delete=models.CASCADE, 
+        null=True, 
+        blank=True, 
+        related_name='children',
+        verbose_name='Categoria Pai'
+    )
+
+    class MPTTMeta:
+        order_insertion_by = ['name'] # Ordena as categorias alfabeticamente no mesmo nível
+
     class Meta:
         verbose_name = 'Categoria'
         verbose_name_plural = 'Categorias'
-        ordering = ['name']
+
     def __str__(self):
         return self.name
 
@@ -40,6 +55,7 @@ class Part(models.Model):
         null=True, # O campo é opcional
         blank=True # O campo pode ser deixado em branco no formulário
     )
+    is_hall_of_fame = models.BooleanField(default=False, verbose_name="Destaque (Hall da Fama)")
     name = models.CharField(max_length=200, verbose_name='Nome da Peça')
     description = models.TextField(verbose_name='Descrição')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Categoria')
@@ -73,6 +89,7 @@ class Project(models.Model):
         null=True, # O campo é opcional
         blank=True # O campo pode ser deixado em branco no formulário
     )
+    is_hall_of_fame = models.BooleanField(default=False, verbose_name="Destaque (Hall da Fama)")
     title = models.CharField(max_length=255, verbose_name='Título do Projeto')
     description = RichTextUploadingField(verbose_name='Descrição Detalhada')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, verbose_name='Autor')

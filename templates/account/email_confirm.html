@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}Confirmar E-mail{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card text-bg-dark border-secondary">
+                <div class="card-header"><h2 class="mb-0">Confirmar Endereço de E-mail</h2></div>
+                <div class="card-body">
+                    {% if confirmation %}
+                        <p>Por favor, confirme que <a href="mailto:{{ email }}">{{ email }}</a> é o seu endereço de e-mail clicando no botão abaixo.</p>
+                        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                            {% csrf_token %}
+                            <div class="d-grid">
+                                <button class="btn btn-primary" type="submit">Confirmar</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <p>O link de confirmação expirou ou é inválido. Por favor, solicite uma nova confirmação de e-mail.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

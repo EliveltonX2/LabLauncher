@@ -36,3 +36,23 @@ a:hover {
     border-color: #e6b86a;
     color: #183b4e;
 }
+
+/* static/css/custom.css */
+
+.project-hero-banner {
+    height: 40vh; /* 40% da altura da tela */
+    background-size: cover;
+    background-position: center center;
+    padding-bottom: 2rem;
+}
+
+.project-hero-banner h1, .project-hero-banner p {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra no texto para legibilidade */
+}
+
+/* Garante que imagens dentro do conteúdo do CKEditor sejam responsivas */
+.project-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}

@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMi
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.contenttypes.models import ContentType
 
 # Imports dos nossos modelos e formulários
@@ -17,11 +18,12 @@ from comments.forms import CommentForm
 
 # --- VIEWS DE PEÇAS ---
 
-class PartCreateView(LoginRequiredMixin, CreateView):
+class PartCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Part
     form_class = PartForm
     template_name = 'catalog/part_form.html'
     success_url = reverse_lazy('dashboard')
+    success_message = "Sua peça foi enviada com sucesso e está aguardando revisão!"
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -49,11 +51,12 @@ class PartListView(ListView):
         context['categories'] = Category.objects.all()
         return context
 
-class PartUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PartUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = Part
     form_class = PartForm
     template_name = 'catalog/part_form.html'
     success_url = reverse_lazy('dashboard')
+    success_message = "Sua peça foi atualizada com sucesso!"
     def test_func(self):
         part = self.get_object()
         return self.request.user == part.author
@@ -66,7 +69,7 @@ class PartDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         part = self.get_object()
         return self.request.user == part.author
 
-class PartDetailView(FormMixin, DetailView):
+class PartDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Part
     template_name = 'catalog/part_detail.html'
     context_object_name = 'part'
@@ -103,11 +106,13 @@ class PartDetailView(FormMixin, DetailView):
 # --- VIEWS DE PROJETOS ---
 # (A lógica é idêntica à das Peças, apenas trocando os modelos e forms)
 
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Project
     form_class = ProjectForm
     template_name = 'catalog/project_form.html'
     success_url = reverse_lazy('dashboard')
+    success_message = "Seu projeto foi enviado com sucesso e está aguardando revisão!"
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.status = 'in_review'
@@ -132,11 +137,12 @@ class ProjectListView(ListView):
         context['categories'] = Category.objects.all()
         return context
 
-class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = Project
     form_class = ProjectForm
     template_name = 'catalog/project_form.html'
     success_url = reverse_lazy('dashboard')
+    success_message = "Seu projeto foi atualizado com sucesso!"
     def test_func(self):
         project = self.get_object()
         return self.request.user == project.author
@@ -149,7 +155,7 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         project = self.get_object()
         return self.request.user == project.author
 
-class ProjectDetailView(FormMixin, DetailView):
+class ProjectDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Project
     template_name = 'catalog/project_detail.html'
     context_object_name = 'project'

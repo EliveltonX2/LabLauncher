@@ -1,16 +1,73 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Bem-vindo ao LabLauncher{% endblock %}
 
 {% block content %}
-<div class="container text-center py-5">
+<div class="container text-center py-5 mb-5">
     <h1 class="display-3">Construa o Futuro.<br>Peça por Peça.</h1>
-    <p class="lead col-lg-8 mx-auto">
+    <p class="lead col-lg-8 mx-auto text-muted">
         O catálogo aberto de peças e projetos de robótica para estudantes, hobbistas e criadores.
     </p>
-    <hr class="my-4">
-    <p>Pronto para começar?</p>
-    <a class="btn btn-accent btn-lg" href="{% url 'catalog:project-list' %}" role="button">Explorar Projetos</a>
-    <a class="btn btn-outline-light btn-lg" href="{% url 'catalog:part-list' %}" role="button">Explorar Peças</a>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a class="btn btn-accent btn-lg px-4 gap-3" href="{% url 'catalog:project-list' %}">Explorar Projetos</a>
+        <a class="btn btn-outline-secondary btn-lg px-4" href="{% url 'catalog:part-list' %}">Explorar Peças</a>
+    </div>
+</div>
+
+<div class="container mb-5">
+    {% if featured_projects %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Projetos em Destaque</h2>
+            <a href="{% url 'catalog:project-list' %}" class="btn btn-sm btn-outline-light">Ver todos &raquo;</a>
+        </div>
+        <hr>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+            {% for project in featured_projects %}
+                <div class="col">
+                    <div class="card h-100 text-bg-dark shadow-sm">
+                        <a href="{{ project.get_absolute_url }}">
+                            {% if project.thumbnail %}
+                                <img src="{{ project.thumbnail.url }}" class="card-img-top" style="aspect-ratio: 4/3; object-fit: cover;" alt="{{ project.title }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="card-img-top" style="aspect-ratio: 4/3; object-fit: cover;" alt="Placeholder">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.title }}</h5>
+                            <p class="card-text text-muted small">por {{ project.author.username }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if featured_parts %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Peças em Destaque</h2>
+            <a href="{% url 'catalog:part-list' %}" class="btn btn-sm btn-outline-light">Ver todas &raquo;</a>
+        </div>
+        <hr>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mb-5">
+            {% for part in featured_parts %}
+                 <div class="col">
+                    <div class="card h-100 text-bg-dark shadow-sm">
+                         <a href="{{ part.get_absolute_url }}">
+                            {% if part.thumbnail %}
+                                <img src="{{ part.thumbnail.url }}" class="card-img-top" style="aspect-ratio: 4/3; object-fit: cover;" alt="{{ part.name }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="card-img-top" style="aspect-ratio: 4/3; object-fit: cover;" alt="Placeholder">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ part.name }}</h5>
+                            <p class="card-text text-muted small">por {{ part.author.username }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

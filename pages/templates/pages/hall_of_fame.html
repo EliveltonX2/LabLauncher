@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Hall da Fama{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Hall da Fama</h1>
+        <p class="lead text-muted">Uma seleção de peças e projetos de alta qualidade escolhidos por nossos curadores.</p>
+    </div>
+
+    <h2>Projetos em Destaque</h2>
+    <hr>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
+        {% for project in featured_projects %}
+            <div class="col">
+                <div class="card h-100 text-bg-dark">
+                    <a href="{{ project.get_absolute_url }}">
+                        {% if project.thumbnail %}
+                            <img src="{{ project.thumbnail.url }}" class="card-img-top" alt="{{ project.title }}">
+                        {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="Placeholder">
+                        {% endif %}
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text text-muted">por {{ project.author.username }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Nenhum projeto em destaque no momento.</p>
+        {% endfor %}
+    </div>
+
+    <h2>Peças em Destaque</h2>
+    <hr>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mb-5">
+        {% for part in featured_parts %}
+             <div class="col">
+                <div class="card h-100 text-bg-dark">
+                     <a href="{{ part.get_absolute_url }}">
+                        {% if part.thumbnail %}
+                            <img src="{{ part.thumbnail.url }}" class="card-img-top" alt="{{ part.name }}">
+                        {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="Placeholder">
+                        {% endif %}
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ part.name }}</h5>
+                        <p class="card-text text-muted">por {{ part.author.username }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Nenhuma peça em destaque no momento.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

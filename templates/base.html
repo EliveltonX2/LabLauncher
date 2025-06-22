@@ -1,19 +1,18 @@
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
-<html lang="pt-br" data-bs-theme="dark"> <head>
-    <meta charset="UTF-8">
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-T">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}LabLauncher{% endblock %}</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     {% block head_extra %}{% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
 
     <header class="mb-4">
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #183b4e;">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgba(0, 0, 0, 0.46);">
             <div class="container">
                 <a class="navbar-brand fs-4" style="font-family: 'Exo 2', sans-serif;" href="{% url 'home' %}">LabLauncher</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -23,7 +22,8 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="{% url 'catalog:part-list' %}">Peças</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'catalog:project-list' %}">Projetos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'static_page' 'sobre-nos' %}">Sobre</a></li> </ul>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'hall-of-fame' %}">Hall da Fama</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'static_page' 'sobre-nos' %}">Sobre</a></li>
                     </ul>
                     <div class="d-flex">
                         {% if user.is_authenticated %}
@@ -32,10 +32,7 @@
                                     {% if user.profile_picture %}
                                         <img src="{{ user.profile_picture.url }}" alt="Foto de Perfil" width="32" height="32" class="rounded me-2" style="object-fit: cover;">
                                     {% else %}
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person- rounded me-2" viewBox="0 0 16 16">
-                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person- rounded me-2" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
                                     {% endif %}
                                     {{ user.username }}
                                 </a>
@@ -65,22 +62,47 @@
     </header>
 
     <main class="container flex-grow-1">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer class="mt-auto py-3" style="background-color: #000;">
         <div class="container text-center">
             <span class="text-muted">© {% now "Y" %} Kaizo - LabLauncher. Todos os direitos reservados.</span>
             <small class="ms-3">
-            <a href="{% url 'static_page' 'sobre-nos' %}">Sobre Nós</a> | 
-            <a href="{% url 'static_page' 'politica-de-privacidade' %}">Política de Privacidade</a> | 
-            <a href="{% url 'static_page' 'termos-de-servico' %}">Termos de Serviço</a>
+                <a href="{% url 'static_page' 'sobre-nos' %}">Sobre Nós</a> | 
+                <a href="{% url 'static_page' 'politica-de-privacidade' %}">Política de Privacidade</a> | 
+                <a href="{% url 'static_page' 'termos-de-servico' %}">Termos de Serviço</a>
             </small>
         </div>
     </footer>
 
+    {% if messages %}
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+            {% for message in messages %}
+                <div class="toast align-items-center text-bg-{{ message.tags }} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script>
+        // O SCRIPT DE INICIALIZAÇÃO VEM DEPOIS QUE O HTML DOS TOASTS JÁ EXISTE
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const toastElList = document.querySelectorAll('.toast');
+            const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, {delay: 5000})); // Delay de 5s
+            toastList.forEach(toast => toast.show());
+        });
+    </script>
+    
     {% block scripts %}{% endblock %}
+
 </body>
 </html>

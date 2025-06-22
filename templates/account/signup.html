@@ -1,12 +1,32 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block title %}Cadastro{% endblock %}
-
 {% block content %}
-<h2>Cadastre-se</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Finalizar Cadastro</button>
-</form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-bg-dark border-secondary">
+                <div class="card-header"><h2 class="mb-0">Criar Conta</h2></div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h5 class="alert-heading">Atenção!</h5>
+                        <p>Para criar uma conta no LabLauncher, você precisa ser membro de uma instituição de ensino parceira da Kaizo ou ser um apoiador em nosso Patreon. </p>
+                        <hr>
+                        <p class="mb-0">Contas que não se enquadrem nestes critérios podem não ser aprovadas para contribuição.</p>
+                    </div>
+                    
+                    <p>Bem-vindo ao LabLauncher! Crie sua conta para começar a compartilhar e explorar.</p>
+                    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="d-grid">
+                            <button class="btn btn-accent" type="submit">Finalizar Cadastro</button>
+                        </div>
+                    </form>
+                    <p class="small text-muted text-center mt-3">Já tem uma conta? <a href="{% url 'account_login' %}">Faça o login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,88 +1,99 @@
-projects{% extends "base.html" %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}{{ project.name }}{% endblock %}
+{% block title %}{{ project.title }}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+
+<div class="container-fluid px-0 mb-5">
+    <div class="project-hero-banner text-white d-flex align-items-end" 
+         style="background-image: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)), url('{% if project.thumbnail %}{{ project.thumbnail.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}');">
+        <div class="container">
+            <h1 class="display-4">{{ project.title }}</h1>
+            <p class="lead">Um projeto por <a class="text-white" href="{% url 'users:public-profile' project.author.username %}">{{ project.author.username }}</a></p>
+        </div>
+    </div>
+</div>
+<div class="container">
     <div class="row">
-        <div class="col-md-7">
-            <div class="card text-bg-dark">
-                <div class="card-body text-center" style="height: 500px; background-color: #444;">
-                    <p class="lead my-5">Visualizador 3D em breve...</p>
-                    <img src="https://via.placeholder.com/400x300.png?text={{ project.name }}" class="img-fluid" alt="{{ project.name }}">
+        <div class="col-lg-8">
+            <h2 class="mb-3">Instruções e Montagem</h2>
+            <hr>
+            <div class="project-content">
+                {{ project.description|safe }}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card text-bg-dark border-secondary position-sticky" style="top: 2rem;">
+                <div class="card-header">
+                    <h4>Peças Necessárias</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% if project.parts_used.all %}
+                        {% for part in project.parts_used.all %}
+                            <a href="{% url 'catalog:part-detail' part.pk %}" class="list-group-item list-group-item-action list-group-item-dark d-flex justify-content-between align-items-center">
+                                {{ part.name }}
+                                <span class="badge bg-primary rounded-pill">&rarr;</span>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item list-group-item-dark">Nenhuma peça específica foi listada.</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            
+            <div class="card text-bg-dark border-secondary">
+                <div class="card-header">
+                    <h3 class="mb-0">Comentários ({{ comments.count }})</h3>
+                </div>
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                        <div class="d-flex align-items-start mb-4">
+                            {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" alt="Sua foto" width="48" height="48" class="rounded me-3" style="object-fit: cover;">
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle me-3 text-secondary" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
+                            {% endif %}
+                            <form method="post" action="" class="w-100">
+                                 {% csrf_token %}
+                                 {{ comment_form.as_p }}
+                                 <button type="submit" class="btn btn-primary btn-sm mt-2">Enviar Comentário</button>
+                            </form>
+                        </div>
+                        <hr>
+                    {% else %}
+                        <p><a href="{% url 'account_login' %}?next={{ request.path }}">Faça login</a> para deixar um comentário.</p>
+                    {% endif %}
+
+                    {% for comment in comments %}
+                        <div class="d-flex align-items-start mb-3">
+                            {% if comment.author.profile_picture %}
+                                <a href="{% url 'users:public-profile' comment.author.username %}"><img src="{{ comment.author.profile_picture.url }}" alt="Foto de {{ comment.author.username }}" width="48" height="48" class="rounded me-3" style="object-fit: cover;"></a>
+                            {% else %}
+                                 <a href="{% url 'users:public-profile' comment.author.username %}"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle me-3 text-secondary" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg></a>
+                            {% endif %}
+                            <div class="w-100">
+                                <strong><a href="{% url 'users:public-profile' comment.author.username %}" class="text-decoration-none">{{ comment.author.username }}</a></strong>
+                                <small class="text-muted ms-2">{{ comment.created_at|timesince }} atrás</small>
+                                <p class="mb-0 mt-1 bg-dark p-2 rounded">{{ comment.body|linebreaksbr }}</p>
+                            </div>
+                        </div>
+                        {% if not forloop.last %}<hr class="border-secondary">{% endif %}
+                    {% empty %}
+                        <p class="fst-italic">Ainda não há comentários. Seja o primeiro a comentar!</p>
+                    {% endfor %}
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-5">
-            <h1>{{ project.name }}</h1>
-            <p class="text-muted">Enviado por {{ project.author.username }} em {{ project.created_at|date:"d/m/Y" }}</p>
-            <p><strong>Categoria:</strong> <span class="badge bg-secondary">{{ project.category.name }}</span></p>
-            
-            <hr>
-
-            <h3>Descrição</h3>
-            <p>{{ project.description|linebreaksbr }}</p>
-
-            <div class="d-grid gap-2 mt-4">
-                <a href="{{ project.stl_file.url }}" class="btn btn-accent btn-lg" download>
-                    Baixar Arquivo STL
-                </a>
-            </div>
         </div>
     </div>
+
 </div>
-
-<hr class="my-5">
-
-<div class="row justify-content-center">
-    <div class="col-md-10 col-lg-8">
-        
-        <div class="card text-bg-dark border-secondary">
-            <div class="card-header">
-                <h3 class="mb-0">Comentários ({{ comments.count }})</h3>
-            </div>
-            <div class="card-body">
-                {% if user.is_authenticated %}
-                    <div class="d-flex align-items-start mb-4">
-                        {% if user.profile_picture %}
-                            <img src="{{ user.profile_picture.url }}" alt="Sua foto" width="48" height="48" class="rounded me-3" style="object-fit: cover;">
-                        {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle me-3 text-secondary" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
-                        {% endif %}
-                        <form method="post" action="" class="w-100">
-                             {% csrf_token %}
-                             {{ comment_form.body }}
-                             <button type="submit" class="btn btn-primary btn-sm mt-2">Enviar Comentário</button>
-                        </form>
-                    </div>
-                    <hr>
-                {% else %}
-                    <p><a href="{% url 'account_login' %}?next={{ request.path }}">Faça login</a> para deixar um comentário.</p>
-                {% endif %}
-
-                {% for comment in comments %}
-                    <div class="d-flex align-items-start mb-3">
-                        {% if comment.author.profile_picture %}
-                            <img src="{{ comment.author.profile_picture.url }}" alt="Foto de {{ comment.author.username }}" width="48" height="48" class="rounded me-3" style="object-fit: cover;">
-                        {% else %}
-                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle me-3 text-secondary" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
-                        {% endif %}
-                        <div class="w-100">
-                            <strong>{{ comment.author.username }}</strong>
-                            <small class="text-muted ms-2">{{ comment.created_at|timesince }} atrás</small>
-                            <p class="mb-0 mt-1 bg-dark p-2 rounded">{{ comment.body|linebreaksbr }}</p>
-                        </div>
-                    </div>
-                    {% if not forloop.last %}<hr class="border-secondary">{% endif %}
-                {% empty %}
-                    <p class="fst-italic">Ainda não há comentários. Seja o primeiro a comentar!</p>
-                {% endfor %}
-            </div>
-        </div>
-        
-    </div>
-</div>
-<br><br>
-
 {% endblock %}
