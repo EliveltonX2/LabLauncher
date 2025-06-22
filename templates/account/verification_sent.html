@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}Verifique seu E-mail{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            
+            <div class="card text-bg-dark border-secondary">
+                <div class="card-header">
+                    <h2 class="mb-0">Verifique seu E-mail</h2>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Enviamos um e-mail para você para verificação. Por favor, clique no link dentro do e-mail para ativar sua conta.
+                    </p>
+                    <p>
+                        Se você não receber o e-mail em alguns minutos, verifique sua pasta de spam ou entre em contato conosco.
+                    </p>
+
+                    <hr>
+
+                    <div class="alert alert-warning mt-4" role="alert">
+                      <h5 class="alert-heading">Lembrete Importante!</h5>
+                      <p>
+                          Para que sua conta seja aprovada por nossa equipe de curadores, você precisa ser membro de uma instituição de ensino parceira da Kaizo ou ser um apoiador em nosso Patreon.
+                      </p>
+                      <p class="mb-0">
+                          Após a verificação do seu e-mail, sua conta entrará em nosso processo de revisão manual.
+                      </p>
+                    </div>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -9,6 +9,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-local-key-for-dev-only')
 DEBUG = not (os.getenv('USE_S3') == 'TRUE')
 ALLOWED_HOSTS = []
 
+print(f"DEBUGGING: O caminho base (BASE_DIR) do projeto e: {BASE_DIR}")
+
 # Application definition e Middleware (mantenha igual)
 INSTALLED_APPS = [
     'django.contrib.admin', 

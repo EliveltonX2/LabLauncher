@@ -1,17 +1,43 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Adicionar Nova Peça{% endblock %}
 
 {% block content %}
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card text-bg-dark border-secondary">
                 <div class="card-header"><h2 class="mb-0">Adicionar Nova Peça</h2></div>
                 <div class="card-body">
+                    
                     <form method="post" enctype="multipart/form-data" id="part-form">
                         {% csrf_token %}
-                        {{ form.as_p }}
+
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
+                            {{ form.category }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.stl_file.id_for_label }}" class="form-label">{{ form.stl_file.label }}</label>
+                            {{ form.stl_file }}
+                        </div>
+
+                        <div style="display: none;">
+                            {{ form.thumbnail }}
+                            {{ form.camera_pos_x }}
+                            {{ form.camera_pos_y }}
+                            {{ form.camera_pos_z }}
+                        </div>
 
                         <div id="thumbnail-preview-container" class="mt-3" style="display: none;">
                             <label class="form-label">Thumbnail Gerada Automaticamente:</label>
@@ -20,18 +46,38 @@
 
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn btn-accent btn-lg">Enviar Peça para Revisão</button>
-                            <a href="{% url 'catalog:part-list' %}" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="thumbnail-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content text-bg-dark">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalLabel">Posicione sua Peça</h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <canvas id="stl-modal-viewer" class="w-100" style="height: 500px;">o canvas esta aqui</canvas>
+      </div>
+      <div class="modal-footer">
+        <p class="text-muted small me-auto">Use o mouse para girar, dar zoom e posicionar.</p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="confirm-angle-btn">Confirmar Ângulo e Gerar Thumbnail</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
-    <script type="importmap">
+<script type="importmap">
     {
         "imports": {
             "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
@@ -40,96 +86,138 @@
     }
     </script>
 
-    <script type="module">
-        // --- IMPORTS ESSENCIAIS QUE ESTAVAM FALTANDO ---
-        import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
-        import { STLLoader } from 'https://unpkg.com/three@0.165.0/examples/jsm/loaders/STLLoader.js';
+<script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
+    import { STLLoader } from 'https://unpkg.com/three@0.165.0/examples/jsm/loaders/STLLoader.js';
+    import { OrbitControls } from 'https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js';
 
-        // Roda nosso código apenas quando o HTML da página estiver 100% carregado
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- ELEMENTOS DO DOM E VARIÁVEIS GLOBAIS ---
+        const stlInput = document.querySelector('#id_stl_file');
+        const thumbnailInput = document.querySelector('#id_thumbnail');
+        const previewContainer = document.querySelector('#thumbnail-preview-container');
+        const previewImage = document.querySelector('#thumbnail-preview');
+        const camXInput = document.querySelector('#id_camera_pos_x');
+        const camYInput = document.querySelector('#id_camera_pos_y');
+        const camZInput = document.querySelector('#id_camera_pos_z');
+        
+        const modalElement = document.getElementById('thumbnail-modal');
+        const modal = new bootstrap.Modal(modalElement);
+        const confirmBtn = document.getElementById('confirm-angle-btn');
+        
+        // Guarda os dados do arquivo para usar depois
+        let stlDataBuffer = null; 
+        let originalFileName = '';
 
-            // --- LÓGICA DE GERAÇÃO DE THUMBNAIL ---
+        let renderer, camera, scene, controls; // Variáveis da cena 3D
 
-            const stlInput = document.querySelector('#id_stl_file');
-            const thumbnailInput = document.querySelector('#id_thumbnail');
-            const previewContainer = document.querySelector('#thumbnail-preview-container');
-            const previewImage = document.querySelector('#thumbnail-preview');
+        if (!stlInput) {
+            console.error("ERRO: Input de STL #id_stl_file não encontrado.");
+            return;
+        }
 
-            if (!stlInput || !thumbnailInput) {
-                console.error("Não foi possível encontrar os inputs de arquivo STL ou Thumbnail no formulário.");
-                return;
-            }
-
-            const thumbnailParentWrapper = thumbnailInput.closest('p');
-            if (thumbnailParentWrapper) {
-                 thumbnailParentWrapper.style.display = 'none';
-            }
-
-            stlInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-
-                // Mostra um feedback de carregamento
-                if(previewContainer) {
-                    previewImage.src = ""; // Limpa a imagem antiga
-                    previewContainer.style.display = 'block';
-                    // Poderíamos adicionar um spinner aqui
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const contents = e.target.result;
-                    generateThumbnail(contents, file.name);
-                };
-                reader.readAsArrayBuffer(file);
-            });
-
-            function generateThumbnail(stlData, originalFileName) {
-                const scene = new THREE.Scene();
-                scene.background = new THREE.Color(0x2d2d2d);
-                
-                const width = 400; const height = 300;
-                const camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2, 0.1, 1000);
-                camera.position.set(200, 200, 200);
-                camera.lookAt(scene.position);
-
-                scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.5));
-
-                const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
-                renderer.setSize(width, height);
-
-                const loader = new STLLoader();
-                const geometry = loader.parse(stlData);
-                const material = new THREE.MeshPhongMaterial({ color: 0xdda853, specular: 0x111111, shininess: 200 });
-                const mesh = new THREE.Mesh(geometry, material);
-
-                const box = new THREE.Box3().setFromObject(mesh);
-                const size = box.getSize(new THREE.Vector3());
-                const center = box.getCenter(new THREE.Vector3());
-                mesh.position.sub(center);
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = width / maxDim * 0.7;
-                mesh.scale.set(scale, scale, scale);
-
-                scene.add(mesh);
-                renderer.render(scene, camera);
-
-                const dataURL = renderer.domElement.toDataURL('image/png');
-                
-                previewImage.src = dataURL;
-
-                fetch(dataURL)
-                    .then(res => res.blob())
-                    .then(blob => {
-                        const cleanFileName = originalFileName.split('.').slice(0, -1).join('.');
-                        const thumbnailFile = new File([blob], `thumbnail_${cleanFileName}.png`, { type: 'image/png' });
-                        
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(thumbnailFile);
-                        thumbnailInput.files = dataTransfer.files;
-                        console.log("Thumbnail gerada e anexada ao formulário!");
-                    });
-            }
+        // --- ETAPA 1: USUÁRIO SELECIONA O ARQUIVO ---
+        stlInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            originalFileName = file.name;
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                stlDataBuffer = e.target.result; // Salva os dados do arquivo
+                modal.show(); // Apenas mostra o modal
+            };
+            reader.readAsArrayBuffer(file);
         });
-    </script>
+
+        // --- ETAPA 2: O MODAL TERMINA DE ABRIR ---
+        // Este evento só é disparado quando o modal está 100% visível
+        modalElement.addEventListener('shown.bs.modal', function () {
+            setup3DScene(stlDataBuffer); // Agora sim, iniciamos a cena 3D
+        });
+        
+        // --- ETAPA 3: O USUÁRIO CONFIRMA O ÂNGULO ---
+        confirmBtn.addEventListener('click', function() {
+            if (!camera || !renderer) return;
+            
+            camXInput.value = camera.position.x;
+            camYInput.value = camera.position.y;
+            camZInput.value = camera.position.z;
+            
+            renderer.render(scene, camera);
+            const dataURL = renderer.domElement.toDataURL('image/png');
+            
+            previewImage.src = dataURL;
+            previewContainer.style.display = 'block';
+
+            fetch(dataURL).then(res => res.blob()).then(blob => {
+                const cleanFileName = originalFileName.split('.').slice(0, -1).join('.');
+                const thumbnailFile = new File([blob], `thumbnail_${cleanFileName}.png`, { type: 'image/png' });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(thumbnailFile);
+                thumbnailInput.files = dataTransfer.files;
+            });
+            
+            modal.hide();
+        });
+
+
+        // --- FUNÇÃO QUE MONTA A CENA 3D ---
+        function setup3DScene(stlData) {
+            const modalCanvas = document.getElementById('stl-modal-viewer');
+            if (!stlData || !modalCanvas) return;
+            
+            const width = modalCanvas.clientWidth; // Agora terá um valor correto
+            const height = modalCanvas.clientHeight; // Agora terá um valor correto
+            
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x09171f);
+            
+            renderer = new THREE.WebGLRenderer({ canvas: modalCanvas, antialias: true, preserveDrawingBuffer: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            
+            camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            
+            scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 2));
+
+            // --- LÓGICA DO MATCAP ---
+            const textureLoader = new THREE.TextureLoader();
+            const matcapTexture = textureLoader.load("{% static 'images/matcaps/matcap7.png' %}");
+            const loader = new STLLoader();
+            const geometry = loader.parse(stlData);
+            
+            const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
+            const mesh = new THREE.Mesh(geometry, material);
+            const box = new THREE.Box3().setFromObject(mesh);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+            mesh.position.sub(center);
+            scene.add(mesh);
+            
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const fov = camera.fov * (Math.PI / 180);
+            const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+            
+            camera.position.set(cameraZ, cameraZ / 1.5, cameraZ);
+            camera.far = maxDim * 100;
+            camera.near = maxDim / 100;
+            camera.updateProjectionMatrix();
+
+            controls.target.copy(mesh.position);
+            
+            function animate() {
+                if (!modalElement.classList.contains('show')) return;
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+    });
+</script>
+
 {% endblock %}

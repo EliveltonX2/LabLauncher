@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}Conta Inativa{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            
+            <div class="card text-bg-dark border-secondary">
+                <div class="card-header">
+                    <h2 class="mb-0">Conta Inativa</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead">
+                        Sua conta está atualmente inativa.
+                    </p>
+                    <p>
+                        Isso geralmente significa que sua conta foi devidamente cadastrada e seu e-mail verificado, mas ela ainda está na fila aguardando a aprovação manual da nossa equipe de curadores.
+                    </p>
+
+                    <hr>
+
+                    <div class="alert alert-info mt-4" role="alert">
+                      <h5 class="alert-heading">Lembrete dos Pré-requisitos</h5>
+                      <p>
+                          Para que sua conta seja aprovada, você precisa ser membro de uma instituição de ensino parceira da Kaizo ou ser um apoiador em nosso Patreon.
+                      </p>
+                      <p class="mb-0">
+                          Agradecemos a sua paciência enquanto revisamos sua inscrição.
+                      </p>
+                    </div>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
