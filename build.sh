@@ -2,21 +2,19 @@
 # exit on error
 set -o errexit
 
-echo "--- INICIANDO BUILD SCRIPT COM RESET DE MIGRATIONS ---"
+echo "--- INICIANDO BUILD SCRIPT FINAL ---"
 
 pip install -r requirements.txt
 python manage.py collectstatic --no-input --clear
 
-# --- O RESET ---
-# Passo 1: Diz ao banco de produção para "esquecer" o histórico de migrações do app 'catalog'.
-# Isso NÃO deleta as tabelas, apenas limpa os registros.
-echo "--- Forçando reset do histórico de migrações para o app 'catalog' ---"
-python manage.py migrate catalog zero --fake
+# --- A CORREÇÃO ---
+# Passo 1: Finge que a migração inicial já foi aplicada.
+# Isso alinha o histórico do Django com as tabelas que já existem no banco do Render.
+echo "--- Rodando FAKE INITIAL migrate para o app 'catalog' ---"
+python manage.py migrate catalog --fake-initial
 
-# Passo 2: Agora, roda o migrate normalmente.
-# Ele encontrará o nosso novo arquivo 0001_initial.py e o aplicará,
-# criando as tabelas que faltam (PartCategory, etc.).
-echo "--- Aplicando todas as migrações a partir de um estado limpo ---"
+# Passo 2: Agora, roda o migrate normalmente para aplicar quaisquer outras migrações pendentes.
+echo "--- Rodando migrate normal para o restante dos apps ---"
 python manage.py migrate
 
 # Passo 3: Cria o superusuário.
