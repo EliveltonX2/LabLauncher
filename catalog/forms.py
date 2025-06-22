@@ -8,7 +8,10 @@ class PartForm(forms.ModelForm):
         model = Part
         # Define os campos que aparecerão no formulário.
         # 'author' e 'status' serão definidos automaticamente na view.
-        fields = ['name', 'description', 'category', 'stl_file', 'thumbnail',]
+        fields = [ 
+            'name', 'description', 'category', 'thumbnail', 'stl_file',
+            'camera_pos_x', 'camera_pos_y', 'camera_pos_z',
+            ]
 
         # (Opcional) Adiciona widgets para customizar a aparência dos campos
         widgets = {
@@ -16,6 +19,9 @@ class PartForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Descreva a função e dicas de impressão da peça.'}),
             'category': forms.Select(attrs={'class': 'form-select'}),
             'stl_file': forms.FileInput(attrs={'class': 'form-control'}),
+            'camera_pos_x': forms.HiddenInput(),
+            'camera_pos_y': forms.HiddenInput(),
+            'camera_pos_z': forms.HiddenInput(),
         }
 
         # (Opcional) Define os rótulos dos campos

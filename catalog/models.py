@@ -72,6 +72,9 @@ class Part(models.Model):
 
     # O campo agora usa a variável que definimos acima
     stl_file = models.FileField(upload_to='parts_stl/', storage=storage_para_usar, verbose_name='Arquivo STL')
+    camera_pos_x = models.FloatField(null=True, blank=True, verbose_name="Câmera Posição X")
+    camera_pos_y = models.FloatField(null=True, blank=True, verbose_name="Câmera Posição Y")
+    camera_pos_z = models.FloatField(null=True, blank=True, verbose_name="Câmera Posição Z")
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='in_review', verbose_name='Status')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
