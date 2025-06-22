@@ -1,6 +1,7 @@
 # catalog/admin.py
 
 from django.contrib import admin
+from mptt.admin import MPTTModelAdmin
 from .models import Category, Part, Project
 import random
 
@@ -39,12 +40,11 @@ def duplicate_parts(modeladmin, request, queryset):
 
 #REGISTRANDO MODELOS
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    """
-    Configuração de admin para o modelo Category.
-    """
+class CategoryAdmin(MPTTModelAdmin):
     list_display = ('name', 'slug')
-    prepopulated_fields = {'slug': ('name',)} # Preenche o slug automaticamente a partir do nome
+    prepopulated_fields = {'slug': ('name',)}
+    mptt_level_indent = 20 # Define a indentação visual da árvore
+
 
 @admin.register(Part)
 class PartAdmin(admin.ModelAdmin):
