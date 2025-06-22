@@ -25,6 +25,10 @@ class PartForm(forms.ModelForm):
             'category': 'Categoria',
             'stl_file': 'Arquivo STL',
         }
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            # Torna o campo de thumbnail não obrigatório no formulário
+            self.fields['thumbnail'].required = False
 
 class ProjectForm(forms.ModelForm):
     class Meta:
