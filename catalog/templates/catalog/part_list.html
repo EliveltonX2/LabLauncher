@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load query_transforms %}
 
 {% block title %}Catálogo de Peças{% endblock %}
 
@@ -17,10 +18,18 @@
                 <div class="col-md-4">
                     <select name="category" class="form-select">
                         <option value="">Todas as Categorias</option>
-                        {% for category in categories %}
-                            <option value="{{ category.pk }}" {% if request.GET.category == category.pk|stringformat:"s" %}selected{% endif %}>
-                                {{ category.name }}
-                            </option>
+                        {% for category in part_categories %}
+
+                        <option 
+                        value="{{ category.pk }}" 
+                        class ="{% if category.level == 0 %}fw-bold text-warning{% endif %}"
+                        {% if request.GET.category == category.pk|stringformat:"s" %}selected{% endif %}>
+
+                            {% for i in category.level|get_range %}&nbsp;-{% endfor %}
+                            {{ category.name }}
+
+                        </option>
+                            
                         {% endfor %}
                     </select>
                 </div>

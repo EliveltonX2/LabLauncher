@@ -21,7 +21,7 @@ else:
     print("--- LOG DE DEBUG (models.py): Usando FileSystemStorage ---")
 
 
-class Category(MPTTModel): # Herda de MPTTModel em vez de models.Model
+class PartCategory(MPTTModel): # Herda de MPTTModel em vez de models.Model
     name = models.CharField(max_length=100, unique=True, verbose_name='Nome')
     slug = models.SlugField(max_length=120, unique=True, help_text='Versão do nome otimizada para URLs.')
 
@@ -35,12 +35,21 @@ class Category(MPTTModel): # Herda de MPTTModel em vez de models.Model
         verbose_name='Categoria Pai'
     )
 
-    class MPTTMeta:
-        order_insertion_by = ['name'] # Ordena as categorias alfabeticamente no mesmo nível
+    class Meta:
+        verbose_name = 'Categoria de Peça'
+        verbose_name_plural = 'Categorias de Peças'
+
+    def __str__(self):
+        return self.name
+    
+class ProjectCategory(MPTTModel):
+    name = models.CharField(max_length=100, unique=True, verbose_name='Nome')
+    slug = models.SlugField(max_length=120, unique=True, help_text='Versão do nome otimizada para URLs.')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children', verbose_name='Categoria Pai')
 
     class Meta:
-        verbose_name = 'Categoria'
-        verbose_name_plural = 'Categorias'
+        verbose_name = 'Categoria de Projeto'
+        verbose_name_plural = 'Categorias de Projetos'
 
     def __str__(self):
         return self.name
@@ -58,7 +67,7 @@ class Part(models.Model):
     is_hall_of_fame = models.BooleanField(default=False, verbose_name="Destaque (Hall da Fama)")
     name = models.CharField(max_length=200, verbose_name='Nome da Peça')
     description = models.TextField(verbose_name='Descrição')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Categoria')
+    category = models.ForeignKey(PartCategory, on_delete=models.SET_NULL, null=True, verbose_name='Categoria da Peça')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, verbose_name='Autor')
 
     # O campo agora usa a variável que definimos acima
@@ -93,7 +102,7 @@ class Project(models.Model):
     title = models.CharField(max_length=255, verbose_name='Título do Projeto')
     description = RichTextUploadingField(verbose_name='Descrição Detalhada')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, verbose_name='Autor')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Categoria')
+    category = models.ForeignKey(ProjectCategory, on_delete=models.SET_NULL, null=True, verbose_name='Categoria do Projeto')
     parts_used = models.ManyToManyField(Part, blank=True, verbose_name='Peças Utilizadas')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='in_review', verbose_name='Status')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')

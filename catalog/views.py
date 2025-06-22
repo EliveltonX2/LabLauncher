@@ -11,7 +11,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.contenttypes.models import ContentType
 
 # Imports dos nossos modelos e formulários
-from .models import Part, Project, Category
+from .models import Part, Project, ProjectCategory, PartCategory
 from .forms import PartForm, ProjectForm
 from comments.models import Comment
 from comments.forms import CommentForm
@@ -39,16 +39,27 @@ class PartListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset().filter(status='approved')
         search_query = self.request.GET.get('q')
-        category_query = self.request.GET.get('category')
+        category_id = self.request.GET.get('category')
+
         if search_query:
             queryset = queryset.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
-        if category_query:
-            queryset = queryset.filter(category__id=category_query)
+
+        # Lógica de filtro hierárquico ATUALIZADA
+        if category_id:
+            try:
+                # AGORA BUSCA EM PartCategory
+                selected_category = PartCategory.objects.get(pk=category_id)
+                descendants = selected_category.get_descendants(include_self=True)
+                queryset = queryset.filter(category__in=descendants)
+            except PartCategory.DoesNotExist:
+                pass
+
         return queryset.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        # AGORA ENVIA APENAS AS CATEGORIAS DE PEÇAS PARA O TEMPLATE
+        context['part_categories'] = PartCategory.objects.all()
         return context
 
 class PartUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
@@ -123,18 +134,31 @@ class ProjectListView(ListView):
     template_name = 'catalog/project_list.html'
     context_object_name = 'projects'
     paginate_by = 10
+
     def get_queryset(self):
         queryset = super().get_queryset().filter(status='approved')
         search_query = self.request.GET.get('q')
-        category_query = self.request.GET.get('category')
+        category_id = self.request.GET.get('category')
+
         if search_query:
             queryset = queryset.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
-        if category_query:
-            queryset = queryset.filter(category__id=category_query)
+
+        # Lógica de filtro hierárquico ATUALIZADA
+        if category_id:
+            try:
+                # AGORA BUSCA EM ProjectCategory
+                selected_category = ProjectCategory.objects.get(pk=category_id)
+                descendants = selected_category.get_descendants(include_self=True)
+                queryset = queryset.filter(category__in=descendants)
+            except ProjectCategory.DoesNotExist:
+                pass
+
         return queryset.order_by('-created_at')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        # AGORA ENVIA APENAS AS CATEGORIAS DE PROJETOS PARA O TEMPLATE
+        context['project_categories'] = ProjectCategory.objects.all()
         return context
 
 class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):

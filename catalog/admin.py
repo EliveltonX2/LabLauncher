@@ -2,16 +2,14 @@
 
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
-from .models import Category, Part, Project
+from .models import PartCategory, ProjectCategory, Part, Project
 import random
 
 #ACTIONS
 
 @admin.action(description="Duplicar Peças selecionadas para teste")
 def duplicate_parts(modeladmin, request, queryset):
-    """
-    Ação que duplica os objetos Part selecionados 5 vezes cada.
-    """
+
     total_new_parts = 0
     all_categories = list(Category.objects.all()) # Pega todas as categorias uma vez
 
@@ -19,7 +17,7 @@ def duplicate_parts(modeladmin, request, queryset):
         for i in range(5): # Cria 5 cópias para cada peça selecionada
             original_pk = part.pk
             part.pk = None  # Truque do Django: definir a PK como None força a criação de um novo objeto
-            part.name = f"{part.name} (Cópia {total_new_parts + 1})"
+            part.name = f"{part.name}{total_new_parts + 1}"
 
             # Opcional: Atribui uma categoria aleatória para variar os dados
             if all_categories:
@@ -39,8 +37,14 @@ def duplicate_parts(modeladmin, request, queryset):
 
 
 #REGISTRANDO MODELOS
-@admin.register(Category)
-class CategoryAdmin(MPTTModelAdmin):
+@admin.register(PartCategory)
+class PartCategoryAdmin(MPTTModelAdmin):
+    list_display = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+    mptt_level_indent = 20 # Define a indentação visual da árvore
+
+@admin.register(ProjectCategory)
+class ProjectCategoryAdmin(MPTTModelAdmin):
     list_display = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
     mptt_level_indent = 20 # Define a indentação visual da árvore
@@ -48,9 +52,6 @@ class CategoryAdmin(MPTTModelAdmin):
 
 @admin.register(Part)
 class PartAdmin(admin.ModelAdmin):
-    """
-    Configuração de admin para o modelo Part.
-    """
     list_display = ('name', 'author', 'category', 'status', 'is_hall_of_fame')
     list_filter = ('status', 'category', 'author', 'is_hall_of_fame') 
     list_editable = ('status', 'is_hall_of_fame') 
@@ -59,9 +60,6 @@ class PartAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    """
-    Configuração de admin para o modelo Project.
-    """
     list_display = ('title', 'author', 'category', 'status', 'created_at', 'is_hall_of_fame')
     list_filter = ('status', 'category', 'author', 'is_hall_of_fame')
     list_editable = ('status', 'is_hall_of_fame')

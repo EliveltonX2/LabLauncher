@@ -16,3 +16,9 @@ def url_replace(context, **kwargs):
     for key, value in kwargs.items():
         query[key] = value
     return query.urlencode()
+
+@register.filter
+def get_range(value):
+    if isinstance(value, int):
+        return range(value)
+    return range(0)
