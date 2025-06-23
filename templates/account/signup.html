@@ -10,12 +10,12 @@
                 <div class="card-body">
                     <div class="alert alert-warning" role="alert">
                         <h5 class="alert-heading">Atenção!</h5>
-                        <p>Para criar uma conta no LabLauncher, você precisa ser membro de uma instituição de ensino parceira da Kaizo ou ser um apoiador em nosso Patreon. </p>
+                        <p>Para criar uma conta no LabLauncher, você precisa ser membro de uma instituição de ensino parceira da Kaizo.</p>
                         <hr>
-                        <p class="mb-0">Contas que não se enquadrem nestes critérios podem não ser aprovadas para contribuição.</p>
+                        <p class="mb-0">Contas que não se enquadrem nestes critérios podem não ser aprovadas.</p>
                     </div>
                     
-                    <p>Bem-vindo ao LabLauncher! Crie sua conta para começar a compartilhar e explorar.</p>
+                    <p>Bem-vindo ao LabLauncher! Crie sua conta!</p>
                     <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
                         {% csrf_token %}
                         {{ form.as_p }}
