@@ -46,14 +46,14 @@
             <div class="card h-100 text-bg-dark">
                 
                 {% if project.thumbnail %}
-                    <img src="{{ project.thumbnail.url }}" class="card-img-top" alt="{{ project.name }}">
+                    <img src="{{ project.thumbnail.url }}" class="card-img-top" alt="{{ project.title }}">
                 {% else %}
                     <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="Placeholder">
                 {% endif %}
 
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">
-                        <a href="{% url 'catalog:project-detail' project.pk %}" class="stretched-link">{{ project.name }}</a>
+                        <a href="{% url 'catalog:project-detail' project.pk %}" class="stretched-link h5">{{project.title}}</a>
                     </h5>
                     <p class="card-text text-muted">por <a href="{% url 'users:public-profile' project.author.username %}">{{ project.author.username }}</a></p>
                 </div>
