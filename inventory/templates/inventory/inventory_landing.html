@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Laboratórios Kaizo{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <h1 class="display-4">Explore Nossos Laboratórios</h1>
+    <p class="lead col-lg-8 mx-auto text-muted">
+        Uma rede de espaços de criação e aprendizado equipados com ferramentas de ponta para impulsionar a inovação. Descubra os equipamentos disponíveis, manuais e especificações técnicas.
+    </p>
+    <hr class="my-4">
+
+    {% if user.is_authenticated %}
+        <p>Você está logado. Comece a explorar agora.</p>
+        <a class="btn btn-accent btn-lg" href="{% url 'inventory:lab-list' %}" role="button">Explorar Laboratórios</a>
+    {% else %}
+        <p>O acesso ao inventário detalhado é exclusivo para membros.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'account_login' %}?next={{ request.path }}" role="button">Login</a>
+        <a class="btn btn-secondary btn-lg" href="{% url 'account_signup' %}" role="button">Cadastre-se</a>
+    {% endif %}
+</div>
+{% endblock %}

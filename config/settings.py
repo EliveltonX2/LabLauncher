@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
     'comments.apps.CommentsConfig',
+    'inventory.apps.InventoryConfig',
     'storages',
     'mptt', 
     'ckeditor', 
@@ -41,7 +42,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 ROOT_URLCONF = 'config.urls'
-TEMPLATES = [ #... Mantenha sua config de TEMPLATES
+TEMPLATES = [
     {'BACKEND': 
      'django.template.backends.django.DjangoTemplates',
      'DIRS': [os.path.join(BASE_DIR, 'templates')],

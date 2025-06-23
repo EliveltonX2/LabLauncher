@@ -25,6 +25,7 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('curation/', include('submission.urls', namespace='submission')),
     path('catalog/', include('catalog.urls', namespace='catalog')),
+    path('inventory/', include('inventory.urls', namespace='inventory')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('pages.urls')),
 

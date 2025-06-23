@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Nossos Laboratórios{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Nossos Laboratórios</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for lab in labs %}
+        <div class="col">
+            <div class="card h-100 text-bg-dark shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'inventory:lab-detail' lab.pk %}" class="stretched-link">{{ lab.name }}</a>
+                    </h5>
+                    <p class="card-text">{{ lab.description|truncatewords:20 }}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">{{ lab.equipments.count }} equipamento(s) registrado(s)</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="col">
+                <p>Nenhum laboratório cadastrado no momento.</p>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}
