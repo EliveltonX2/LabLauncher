@@ -1,0 +1,279 @@
+:root {
+    --kaizo-dark-bg: rgb(15, 15, 15);
+    --kaizo-cyan: #fff;
+    --kaizo-gold: #DDA853;
+    --kaizo-light-text: #F3F3E0;
+    --kaizo-grey: #444;
+}
+
+body {
+    background-color: var(--kaizo-dark-bg);
+    color: var(--kaizo-light-text);
+    font-family: 'Lato', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.navbar {
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: var(--kaizo-cyan);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--kaizo-light-text);
+    font-weight: 700;
+}
+
+.nav-link:hover {
+    color: var(--kaizo-gold);
+}
+
+.navbar-scrolled {
+    background-color: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(10px);
+}
+
+.hero {
+    position: relative;
+    padding: 10rem 0;
+    text-align: center;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#threejs-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    cursor: grab;
+}
+
+#threejs-canvas:active {
+    cursor: grabbing;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    border-radius: 15px;
+    pointer-events: none;
+    /* Permite que o clique passe para o canvas */
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--kaizo-cyan);
+}
+
+.hero p {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 1rem auto;
+}
+
+.btn-gold {
+    background-color: var(--kaizo-gold);
+    color: var(--kaizo-dark-bg);
+    font-weight: 100;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    border: none;
+    pointer-events: all;
+    /* Garante que o botão seja clicável */
+}
+
+.btn-gold:hover {
+    box-shadow: 0 0 20px rgba(221, 168, 83, 0.2);
+    background-color: var(--kaizo-gold);
+}
+
+.section {
+    padding: 6rem 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--kaizo-cyan);
+}
+
+.feature-card {
+    background-color: var(--kaizo-grey);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    height: 100%;
+    border: 1px solid #555;
+}
+
+
+.mensagem_div {
+    margin: 0rem 1.5rem;
+    max-width: 100%;
+    padding: 4rem 6rem;
+}
+
+.text_message {
+    text-align: justify;
+    font-weight: 100;
+}
+
+.text_message b {
+    font-weight: 700;
+}
+
+.feature-title {
+    color: var(--kaizo-gold);
+    font-size: 1.7rem;
+}
+
+#diferenciais,
+#inovacao,
+#Sessao3 {
+    height: 100vh;
+    padding: 4rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: var(--kaizo-light-text);
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+
+#diferenciais::before,
+#inovacao::before,
+#Sessao3::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(28, 28, 28, 0.30);
+    z-index: 1;
+}
+
+#diferenciais .container,
+#inovacao .container,
+#Sessao3 .container {
+    position: relative;
+    z-index: 2;
+}
+
+
+
+#diferenciais {
+    background-image: url('/static/images/backgrounds/pexels-cottonbro-4705623.jpg');
+}
+
+#inovacao {
+    background-image: url('/static/images/backgrounds/pexels-mart-production-8471945.jpg');
+}
+
+#Sessao3 {
+    background-image: url('/static/images/backgrounds/brian-kamau-unsplash.jpg');
+}
+
+#logo {
+    background-image: url('/static/images/logos/logo-kaizo.svg');
+}
+
+.checklist li {
+    list-style: none;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.checklist li::before {
+    content: '✓';
+    color: var(--kaizo-gold);
+    font-weight: bold;
+    display: inline-block;
+    width: 1.5em;
+    margin-left: -1.5em;
+}
+
+/* ===== ESTILOS PARA O CARROSSEL (NOVO) ===== */
+.carousel-section {
+    background-color: var(--kaizo-dark-bg);
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+}
+
+.value-card {
+    background-color: #222;
+    border: 1px solid #555;
+    border-radius: 15px;
+    padding: 2rem;
+    min-height: 15rem;
+    max-width: 30rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.value-card h3 {
+    color: var(--kaizo-gold);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: var(--kaizo-gold) !important;
+}
+
+/* ===== FIM DOS ESTILOS DO CARROSSEL ===== */
+
+.footer {
+    background-color: #000;
+    padding: 3rem 0;
+    font-size: 0.9rem;
+}
+.footer .container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer .container::before{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.footer a {
+    color: var(--kaizo-light-text);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: var(--kaizo-cyan);
+}

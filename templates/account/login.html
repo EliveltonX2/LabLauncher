@@ -1,30 +1,70 @@
-{% extends "base.html" %}
-{% load i18n %}
-{% block title %}Login{% endblock %}
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card text-bg-dark border-secondary">
-                <div class="card-header"><h2 class="mb-0">Login</h2></div>
-                <div class="card-body">
-                    <form class="login" method="POST" action="{% url 'account_login' %}">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                        {% endif %}
-                        <div class="d-grid">
-                            <button class="btn btn-primary" type="submit">Entrar</button>
-                        </div>
-                    </form>
-                    <div class="text-center mt-3">
-                        <a class="small" href="{% url 'account_reset_password' %}">Esqueceu a senha?</a>
-                        <p class="small text-muted mt-2">Não tem uma conta? <a href="{% url 'account_signup' %}">Cadastre-se</a></p>
-                    </div>
-                </div>
+{% extends "pages/auth_base.html" %}
+
+{% block title %}Login - LabLauncher{% endblock %}
+
+{% block auth_content %}
+<div class="auth-card">
+    <div class="text-center mb-4">
+        <a href="{% url 'home' %}" style="text-decoration: none">
+            <h2 style="font-family: 'Exo 2', sans-serif; color: #f3f3e0;"><img src="/static/images/logos/lablauncher.svg" alt="logo LabLauncher" style="max-height: 2rem;">LabLauncher</h2>
+        </a>
+        <p class="mt-2" style="color: white;">Bem-vindo de volta!</p>
+    </div>        
+
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %}
+
+            <div class="form-floating mb-3" style="color: white;">
+                <input 
+                    type="text" 
+                    name="login" 
+                    class="form-control" 
+                    id="id_login" 
+                    placeholder="Usuário ou E-mail"
+                    required 
+                    autofocus>
+                <label for="id_login" >Usuário ou E-mail</label>
             </div>
-        </div>
-    </div>
+
+            <div class="form-floating mb-4" style="color: white;">
+                <input 
+                    type="password" 
+                    name="password" 
+                    class="form-control" 
+                    id="id_password" 
+                    placeholder="Senha"
+                    required>
+                <label for="id_password">Senha</label>
+            </div>
+
+            <div class="form-check text-start my-3" style="color: white;">
+                <input class="form-check-input" type="checkbox" name="remember" id="id_remember">
+                <label class="form-check-label" for="id_remember">
+                    Lembrar-me
+                </label>
+            </div>
+
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+
+            <div class="d-grid my-3">
+                <button class="btn btn-primary btn-lg" type="submit">Entrar</button>
+            </div>
+
+            <div class="text-center">
+                <a class="small" href="{% url 'account_reset_password' %}" style="color: #ccc;">Esqueceu a senha?</a>
+            </div>
+        </form>
+
+
+
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+
+    <hr class="my-4 border-secondary">
+    <p class="text-center small">Não tem uma conta? <a href="{% url 'account_signup' %}" style="color: #dda853;">Cadastre-se</a></p>
 </div>
 {% endblock %}

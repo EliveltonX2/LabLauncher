@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaizo - Soluções em Tecnologia Educacional</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/kaizo_main.css' %}">
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> 
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#logo"><img src="{% static "images/logos/logo-kaizo.svg" %}" alt="Logo Kaizo" style="height: 1.5rem;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#feature-section-bg">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#diferenciais">Diferenciais</a></li>
+                    <li class="nav-item"><a class="nav-link" href={% url 'account_login' %}>LabLauncher</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="hero">
+        <canvas id="threejs-canvas"></canvas>
+        <div class="container hero-content">
+            <h1 class="display-4">INOVAÇÃO INTELIGENTE, PROPÓSITO EM CADA SOLUÇÃO.</h1>
+            <p class="lead">A Kaizo é referência em soluções tecnológicas para a transformação da educação e o fortalecimento de empresas que querem evoluir com propósito.</p>
+            
+        </div>
+    </header>
+    <main>
+        
+        <section id="feature-section-bg">
+            <div class="mensagem_div">
+                <p>
+                    <h3>Sobre a KAIZO</h3>
+                </p>
+                <p class="text_message">
+                    A Kaizo nasceu da união entre tecnologia, propósito e transformação real. 
+                    Mais do que fornecer equipamentos ou montar laboratórios, criamos ambientes 
+                    que inspiram mudança em escolas, instituições públicas e empresas que acreditam 
+                    no poder da inovação para evoluir.
+                    </p>
+                    <p class="text_message"></p>
+                    Nosso nome vem do japonês <b>“改造”</b>(kaizō), que 
+                    significa <b>modificar para melhorar.</b> Popularizado no universo dos games, o termo representa 
+                    a arte de <b>reinventar com inteligência e criatividade,</b> superando limites e recriando possibilidades. 
+                    </p>
+                    <p class="text_message"></p>
+                    <b>Essa é a nossa essência: transformar o já existente em algo mais eficaz, acessível e duradouro.</b> 
+                    Com uma metodologia própria que alia infraestrutura tecnológica, suporte contínuo e conteúdos didáticos
+                     exclusivos, a Kaizo entrega soluções que vão além do digital são experiências integradas, 
+                     que conectam o fazer pedagógico, a gestão eficiente e o impacto social. 
+                     </p>
+                     <p class="text_message">
+                     Acreditamos que inovação 
+                     não precisa ser complicada, e que o futuro se constrói com ferramentas certas, boas ideias e pessoas
+                      preparadas. É por isso que estamos aqui: para tornar possível o que antes parecia distante.
+                </p>
+            </div>
+        </section>
+        
+
+        <section id="diferenciais" class="feature-section-bg" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2 class="feature-title">TECNOLOGIA QUE CONECTA.</h2>
+                        <p class="feature-text mt-3" style="text-align: justify;"> 
+                            A Kaizo vai além do simples aluguel de equipamentos: entregamos 
+                            laboratórios completos, prontos para uso, com infraestrutura de 
+                            ponta, suporte técnico presencial, manutenção contínua e todos 
+                            os insumos necessários inclusos. Oferecemos ainda seguro dos equipamentos, 
+                            internet dedicada e uma plataforma digital exclusiva o Kaizo LabLauncher 
+                            para transformar o laboratório em um ambiente de aprendizagem ativa, 
+                            prática e inovadora. Tudo isso, sem surpresas nos custos e com foco total em resultado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="inovacao" class="feature-section-bg" >
+            <div class="container">
+                <div class="row justify-content-end">
+                    <div class="col-lg-6 text-lg-end">
+                        <h2 class="feature-title">INOVAÇÃO COM PROPÓSITO.</h2>
+                        <p class="feature-text mt-3 ms-lg-auto" style="text-align: justify;">
+                            A Kaizo é referência em soluções integradas, oferecendo muito mais do que tecnologia: entregamos ambientes completos, preparados para inspirar, engajar e transformar a rotina. Com nossa equipe técnica dedicada, insumos sempre disponíveis, manutenção ágil e uma plataforma digital exclusiva, garantimos o pleno funcionamento dos laboratórios e a tranquilidade para gestores e professores. Nossa missão é conectar inovação e propósito em cada detalhe, assegurando o sucesso das práticas pedagógicas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="Sessao3" class="feature-section-bg" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2 class="feature-title">TRANSFORMAÇÃO REAL EM CADA DETALHE.</h2>
+                        <p class="feature-text mt-3" style="text-align: justify;">Na Kaizo, cada laboratório é pensado para ser eficiente, seguro e pronto para o futuro. Fornecemos estrutura física completa, equipamentos de alto padrão e internet exclusiva. O suporte é contínuo, com técnicos presentes e soluções rápidas para qualquer imprevisto. A plataforma Kaizo LabLauncher organiza e potencializa o uso pedagógico dos laboratórios, tornando a experiência de alunos e professores mais dinâmica e produtiva, sempre com custos claros e gestão simplificada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+        <section class="section carousel-section">
+            <div class="container">
+                <h2 class="section-title">NOSSOS PILARES DE ATUAÇÃO</h2>
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="value-card">
+                                <h3>Solução Completa</h3>
+                                <p>Cuidamos de tudo: do projeto e instalação dos laboratórios até a manutenção contínua e o fornecimento de todos os insumos necessários.</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="value-card">
+                                <h3>Técnico Residente</h3>
+                                <p>Um especialista Kaizo fica na sua escola, garantindo que tudo funcione perfeitamente e dando suporte direto a professores e alunos.</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="value-card">
+                                <h3>Foco no Pedagógico</h3>
+                                <p>Com a infraestrutura sob nossa responsabilidade, os educadores têm liberdade total para se concentrarem no ensino e na aprendizagem.</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="value-card">
+                                <h3>Plataforma Digital</h3>
+                                <p>Acesso exclusivo ao Kaizo Lab Launcher, com projetos, tutoriais e suporte técnico, além da inovação da impressão 3D.</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="value-card">
+                                <h3>Segurança e Normas</h3>
+                                <p>Todos os equipamentos, EPIs e práticas seguem as mais rigorosas normas de segurança, como a NR10 e NR12.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination mt-5"></div>
+                </div>
+            </div>
+        </section>
+        -->
+        </main>
+    
+      <footer class="footer">
+        <div class="container">
+
+            <div class="footer_left">
+                Kaizo Soluções e Tecnologia Ltda <br>
+                Campo Grande, MS, Brasil <br>
+                contato@kaizo.com.br
+            </div>
+            <div class="footer_center">
+                X (Twitter) <br>
+                LinkedIn <br>
+                Instagram <br>
+            </div>
+            <div class="footer_right">
+                © KAIZO. All rights reserved.<br>
+                © LabLauncher. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+        }
+    }
+</script>
+
+<script type="module">
+
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// Navbar scroll effect
+const navbar = document.querySelector('.navbar');
+window.onscroll = () => {
+    if (window.scrollY > 50) {
+        navbar.classList.add('navbar-scrolled');
+    } else {
+        navbar.classList.remove('navbar-scrolled');
+    }
+};
+
+// --- Three.js Scene Setup ---
+const canvas = document.querySelector('#threejs-canvas');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+camera.position.set(0, 100, 300);
+
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding; 
+
+// --- Lighting ---
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+scene.add(ambientLight);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
+directionalLight.position.set(10, 20, 5);
+scene.add(directionalLight);
+
+// --- Controls ---
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 1;
+controls.enableZoom = false;
+
+// --- GLTF Loader ---
+let mixer;
+const clock = new THREE.Clock();
+const loader = new GLTFLoader();
+
+loader.load(
+    "{% static 'glb/robot_steampunk.glb' %}",
+    (gltf) => {
+        const model = gltf.scene;
+        model.scale.set(1, 1, 1);       
+        model.position.y = -100;
+        scene.add(model);
+
+        if (gltf.animations && gltf.animations.length) {
+            mixer = new THREE.AnimationMixer(model);
+            const action = mixer.clipAction(gltf.animations[0]);
+            action.play();
+        }
+    },
+    undefined,
+    (error) => {
+        console.error('Ocorreu um erro ao carregar o modelo:', error);
+    }
+);
+
+// --- Animation Loop ---
+function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
+    controls.update();
+    renderer.render(scene, camera);
+}
+animate();
+
+// --- Window Resize ---
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// --- INICIALIZAÇÃO DO SWIPER (NOVO) ---
+const swiper = new Swiper('.swiper', {
+    loop: true,
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+    },
+    slidesPerView: 1,
+    spaceBetween: 30,
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    },
+    breakpoints: {
+        640: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+        },
+        768: {
+            slidesPerView: 2,
+            spaceBetween: 40,
+        },
+        1024: {
+            slidesPerView: 3,
+            spaceBetween: 50,
+        },
+            1400: {
+            slidesPerView: 4,
+            spaceBetween: 50,
+        },
+    },
+});
+
+
+</script>
+</body>
+</html>

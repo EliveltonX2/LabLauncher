@@ -19,6 +19,9 @@ def home_view(request):
     }
     return render(request, 'pages/home.html', context)
 
+def kaizo_view(request):
+   return render(request, 'pages/kaizo.html',)
+
 @login_required # Garante que apenas usuários logados acessem esta página
 def dashboard_view(request):
     # Busca as peças do usuário logado

@@ -114,7 +114,7 @@ ACCOUNT_USERNAME_REQUIRED = True # Ou False, se você preferir login só por e-m
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # Permite login com user ou e-mail
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # Força a verificação do e-mail
 
-LOGIN_REDIRECT_URL = 'dashboard' # Para onde vai após o login
+LOGIN_REDIRECT_URL = 'home' # Para onde vai após o login
 LOGOUT_REDIRECT_URL = 'home' # Para onde vai após o logout
 
 # Para desenvolvimento, os e-mails de verificação serão impressos no console
