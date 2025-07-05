@@ -9,6 +9,18 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-local-key-for-dev-only')
 DEBUG = not (os.getenv('USE_S3') == 'TRUE')
 ALLOWED_HOSTS = []
 
+# Adiciona o domínio padrão do Render, se existir
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# Adiciona domínios customizados a partir de uma nova variável de ambiente
+CUSTOM_HOSTS = os.environ.get('ALLOWED_HOSTS_CUSTOM')
+if CUSTOM_HOSTS:
+    # Pega a string 'dominio1.com,dominio2.com', divide pela vírgula,
+    # e adiciona cada domínio à lista.
+    ALLOWED_HOSTS.extend([host.strip() for host in CUSTOM_HOSTS.split(',')])
+
 print(f"DEBUGGING: O caminho base (BASE_DIR) do projeto e: {BASE_DIR}")
 
 # Application definition e Middleware (mantenha igual)
