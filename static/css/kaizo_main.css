@@ -283,4 +283,8 @@ h6 {
     .hero h1{
         font-size: 2rem;
     }
+
+    .mensagem_div{
+    padding: 4rem 3rem;
+    }
 }
