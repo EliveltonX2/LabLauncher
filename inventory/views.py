@@ -41,9 +41,15 @@ class LaboratorioMapView(LoginRequiredMixin, TemplateView):
                 'lat': lab.latitude,
                 'lng': lab.longitude,
                 'status': lab.status,
+                'status_display': lab.get_status_display(), # Pega o nome legível do status
                 'lab_type': lab.lab_type.name if lab.lab_type else 'Sem Categoria',
-                'detail_url': lab.get_absolute_url() if hasattr(lab, 'get_absolute_url') else '#' # Adicionaremos get_absolute_url em breve
+                'detail_url': lab.get_absolute_url(),
+                # --- NOVOS DADOS PARA O POPUP ---
+                'endereco': f"{lab.endereco}, {lab.numero}" if lab.endereco and lab.numero else lab.endereco,
+                'telefone': lab.telefone,
+                'description': lab.description,
             })
+
 
         # 3. Converte os dados para uma string JSON segura
         context['labs_json'] = json.dumps(labs_data)

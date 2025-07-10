@@ -88,7 +88,19 @@
                 if (typeMatch && statusMatch) {
                     const markerIcon = icons[lab.status] || icons['default'];
                     const marker = L.marker([lab.lat, lab.lng], { icon: markerIcon });
-                    marker.bindPopup(`<strong>${lab.name}</strong><br><a href="${lab.detail_url}">Ver detalhes</a>`);
+                    // Constrói o conteúdo do pop-up
+                    const popupContent = `
+                        <div style="max-width: 250px;">
+                            <h5 class="mb-1" style="color: #000;">${lab.name}</h5>
+                            <p class="mb-1 small" style="color: #000;" ><strong>Endereço:</strong> ${lab.endereco || 'Não informado'}</p>
+                            <p class="mb-1 small" style="color: #000;"><strong>Telefone:</strong> ${lab.telefone || 'Não informado'}</p>
+                            <p class="mb-2 small" style="color: #000;"><strong>Status:</strong> ${lab.status_display}</p>
+                            <p class="small " style="color: #000;">${lab.description.substring(0, 100)}...</p>
+                            <a href="${lab.detail_url}" class="btn btn-sm btn-primary mt-2" style="color: #000;">Ver Detalhes do Laboratório</a>
+                        </div>`
+                    ;
+
+                    marker.bindPopup(popupContent);
                     markersLayer.addLayer(marker);
                 }
             });

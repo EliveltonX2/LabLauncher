@@ -36,6 +36,10 @@ class Laboratorio(models.Model):
     )
 
     name = models.CharField(max_length=200, verbose_name="Nome do Laboratório")
+    endereco = models.CharField(max_length=255, blank=True, verbose_name="Endereço")
+    numero = models.CharField(max_length=20, blank=True, verbose_name="Número")
+    uf = models.CharField(max_length=2, blank=True, verbose_name="UF")
+    telefone = models.CharField(max_length=20, blank=True, verbose_name="Telefone")
     description = models.TextField(blank=True, verbose_name="Descrição")
     created_at = models.DateTimeField(auto_now_add=True)
     latitude = models.FloatField(null=True, blank=True)

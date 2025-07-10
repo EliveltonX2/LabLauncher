@@ -23,11 +23,23 @@ class EquipmentTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Laboratorio)
 class LaboratorioAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at', 'lab_type', 'status')
-    list_filter = ('status','lab_type')
+    list_display = ('name', 'lab_type', 'status', 'created_at')
+    list_filter = ('status', 'lab_type')
     search_fields = ('name', 'description')
-    # Melhora a interface de seleção de Muitos-para-Muitos para os inspetores
     filter_horizontal = ('inspectors',)
+
+    fieldsets = (
+        ('Informações Principais', {
+            'fields': ('name', 'description', 'lab_type', 'status')
+        }),
+        ('Localização', {
+            'fields': ('endereco', 'numero', 'uf', 'latitude', 'longitude')
+        }),
+        ('Contato e Responsáveis', {
+            'fields': ('telefone', 'inspectors')
+        }),
+    )
+
     
 
 @admin.register(EquipmentInstance)
