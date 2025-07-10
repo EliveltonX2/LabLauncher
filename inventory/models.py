@@ -3,6 +3,7 @@ import os
 from django.db import models
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.urls import reverse
 # Importamos nosso storage S3 para aplicar nos FileFields
 from config.storages import S3MediaStorage
 
@@ -12,12 +13,42 @@ if os.getenv('USE_S3') == 'TRUE':
 else:
     storage_para_usar = FileSystemStorage()
 
+
+class LaboratorioType(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nome do Tipo")
+    description = models.TextField(blank=True, verbose_name="Descrição")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Tipo de Laboratório"
+        verbose_name_plural = "Tipos de Laboratório"
+
+
 class Laboratorio(models.Model):
+
+    STATUS_CHOICES = (
+        ('ok', 'OK'),
+        ('projeto', 'Em Projeto'),
+        ('instalacao', 'Em Instalação'),
+        ('manutencao', 'Em Manutenção'),
+    )
+
     name = models.CharField(max_length=200, verbose_name="Nome do Laboratório")
     description = models.TextField(blank=True, verbose_name="Descrição")
     created_at = models.DateTimeField(auto_now_add=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='projeto', verbose_name="Status")
+
+    lab_type = models.ForeignKey(
+        LaboratorioType, 
+        on_delete=models.SET_NULL, 
+        null=True, blank=True, 
+        related_name="laboratorios",
+        verbose_name="Tipo de Laboratório"
+    )
 
     # Relação Muitos-para-Muitos com os usuários que são inspetores deste laboratório
     inspectors = models.ManyToManyField(
@@ -30,6 +61,11 @@ class Laboratorio(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        # Retorna a URL para a página de detalhes deste laboratório
+        return reverse('inventory:lab-detail', kwargs={'pk': self.pk})
+
 
 class EquipmentType(models.Model):
     name = models.CharField(max_length=200, verbose_name="Nome do Tipo de Equipamento")

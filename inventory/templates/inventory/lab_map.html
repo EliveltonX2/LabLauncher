@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mapa de Laboratórios{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        /* Garante que o container do mapa tenha uma altura definida */
+        #map { 
+            height: 70vh; /* 70% da altura da tela */
+            width: 100%;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-3">Mapa de Laboratórios</h1>
+
+    <div class="row mb-4 g-3">
+    <div class="col-md-4">
+        <label for="type-filter" class="form-label">Filtrar por Tipo:</label>
+        <select id="type-filter" class="form-select">
+            <option value="all">Todos os Tipos</option>
+            {% for type in lab_types %}
+                <option value="{{ type.name }}">{{ type.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="status-filter" class="form-label">Filtrar por Status:</label>
+        <select id="status-filter" class="form-select">
+            <option value="all">Todos os Status</option>
+            <option value="ok">OK</option>
+            <option value="projeto">Em Projeto</option>
+            <option value="instalacao">Em Instalação</option>
+            <option value="manutencao">Em Manutenção</option>
+        </select>
+    </div>
+</div>
+
+    <div id="map"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- 1. PREPARAÇÃO DOS DADOS E ÍCONES (sem alterações) ---
+        const labsData = JSON.parse('{{ labs_json|escapejs }}');
+        const baseIcon = { iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] };
+        const icons = {
+            'ok': L.icon({ ...baseIcon, iconUrl: "{% static 'images/map_icons/pin_ok.png' %}" }),
+            'projeto': L.icon({ ...baseIcon, iconUrl: "{% static 'images/map_icons/pin_projeto.png' %}" }),
+            'instalacao': L.icon({ ...baseIcon, iconUrl: "{% static 'images/map_icons/pin_instalacao.png' %}" }),
+            'manutencao': L.icon({ ...baseIcon, iconUrl: "{% static 'images/map_icons/pin_manutencao.png' %}" }),
+            'default': L.icon({ ...baseIcon, iconUrl: "{% static 'images/map_icons/pin_default.png' %}" })
+        };
+
+        // --- 2. INICIALIZAÇÃO DO MAPA (sem alterações) ---
+        const map = L.map('map').setView([-21.9573, -52.0211], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // --- 3. LÓGICA DO FILTRO ATUALIZADA ---
+        const typeFilterSelect = document.getElementById('type-filter');
+        const statusFilterSelect = document.getElementById('status-filter'); // Pega o novo select
+        let markersLayer = L.layerGroup().addTo(map);
+
+        function drawMarkers() {
+            // Pega os valores atuais de AMBOS os filtros
+            const selectedType = typeFilterSelect.value;
+            const selectedStatus = statusFilterSelect.value;
+
+            markersLayer.clearLayers();
+
+            labsData.forEach(lab => {
+                // Verifica se o laboratório passa nos dois filtros
+                const typeMatch = (selectedType === 'all' || lab.lab_type === selectedType);
+                const statusMatch = (selectedStatus === 'all' || lab.status === selectedStatus);
+
+                if (typeMatch && statusMatch) {
+                    const markerIcon = icons[lab.status] || icons['default'];
+                    const marker = L.marker([lab.lat, lab.lng], { icon: markerIcon });
+                    marker.bindPopup(`<strong>${lab.name}</strong><br><a href="${lab.detail_url}">Ver detalhes</a>`);
+                    markersLayer.addLayer(marker);
+                }
+            });
+        }
+
+        // Adiciona um "ouvinte" de evento para CADA filtro
+        typeFilterSelect.addEventListener('change', drawMarkers);
+        statusFilterSelect.addEventListener('change', drawMarkers);
+
+        // Desenha todos os marcadores inicialmente
+        drawMarkers(); 
+    });
+</script>
+{% endblock %}

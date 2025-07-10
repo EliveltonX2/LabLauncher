@@ -1,7 +1,14 @@
 # inventory/admin.py
 
 from django.contrib import admin
-from .models import Laboratorio, EquipmentType, EquipmentInstance
+from .models import Laboratorio, EquipmentType, EquipmentInstance, LaboratorioType
+
+
+@admin.register(LaboratorioType)
+class LaboratorioTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
 
 class EquipmentInstanceInline(admin.TabularInline):
     """Permite adicionar instâncias de equipamento diretamente na página do Tipo de Equipamento."""
@@ -16,10 +23,12 @@ class EquipmentTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Laboratorio)
 class LaboratorioAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at')
+    list_display = ('name', 'created_at', 'lab_type', 'status')
+    list_filter = ('status','lab_type')
     search_fields = ('name', 'description')
     # Melhora a interface de seleção de Muitos-para-Muitos para os inspetores
     filter_horizontal = ('inspectors',)
+    
 
 @admin.register(EquipmentInstance)
 class EquipmentInstanceAdmin(admin.ModelAdmin):

@@ -9,4 +9,5 @@ urlpatterns = [
     path('', InventoryLandingView.as_view(), name='landing'),
     path('labs/', LaboratorioListView.as_view(), name='lab-list'),
     path('labs/<int:pk>/', LaboratorioDetailView.as_view(), name='lab-detail'),
+    path('map/', LaboratorioMapView.as_view(), name='lab-map'),
 ]
