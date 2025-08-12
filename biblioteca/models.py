@@ -32,7 +32,7 @@ class Book(models.Model):
     class Meta:
         verbose_name = "Livro"
         verbose_name_plural = "Livros"
-        ordering = ['-published_at']
+        ordering = ['published_at']
 
     def __str__(self):
         return self.title
