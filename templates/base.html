@@ -12,6 +12,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
+    {% block header %}
     <header class="mb-4">
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgba(0, 0, 0, 0.46);">
             <div class="container">
@@ -21,6 +22,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'kaizo_view' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'catalog:part-list' %}">Peças</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'catalog:project-list' %}">Projetos</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'hall-of-fame' %}">Destaques</a></li>
@@ -62,6 +64,7 @@
             </div>
         </nav>
     </header>
+    {% endblock %}
 
     <main class="container flex-grow-1">
         {% block content %}{% endblock %}

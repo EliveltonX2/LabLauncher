@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'submission.apps.SubmissionConfig',
     'comments.apps.CommentsConfig',
+    'biblioteca.apps.BibliotecaConfig',
     'inventory.apps.InventoryConfig',
     'storages',
     'mptt', 
@@ -113,6 +114,7 @@ else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     CKEDITOR_STORAGE_BACKEND = 'django.core.files.storage.DefaultStorage'
+    PRIVATE_MEDIA_ROOT = os.path.join(BASE_DIR, 'private_media')
 
 # Outras configs
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -126,8 +128,8 @@ ACCOUNT_USERNAME_REQUIRED = True # Ou False, se você preferir login só por e-m
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # Permite login com user ou e-mail
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # Força a verificação do e-mail
 
-LOGIN_REDIRECT_URL = 'home' # Para onde vai após o login
-LOGOUT_REDIRECT_URL = 'home' # Para onde vai após o logout
+LOGIN_REDIRECT_URL = 'kaizo_view' # Para onde vai após o login
+LOGOUT_REDIRECT_URL = 'kaizo_view' # Para onde vai após o logout
 
 # Para desenvolvimento, os e-mails de verificação serão impressos no console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

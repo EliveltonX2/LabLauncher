@@ -26,6 +26,7 @@ urlpatterns = [
     path('curation/', include('submission.urls', namespace='submission')),
     path('catalog/', include('catalog.urls', namespace='catalog')),
     path('inventory/', include('inventory.urls', namespace='inventory')),
+    path('biblioteca/', include('biblioteca.urls', namespace='biblioteca')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('pages.urls')),
 

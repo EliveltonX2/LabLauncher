@@ -1,0 +1,94 @@
+{% extends "biblioteca/biblioteca_base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <a href="{% url 'biblioteca:menu' %}">&laquo; Voltar para o acervo</a>
+            <h1 class="mt-2">{{ book.title }}</h1>
+            <p class="text-muted">por {{ book.author }}</p>
+        </div>
+        <div id="page-indicator" class="text-muted">Página <span id="page_num"></span> de <span id="page_count"></span></div>
+    </div>
+    <hr>
+
+    <div id="pdf-viewer-container" class="border rounded" style="max-width: 80vw; margin: auto; background-color: #555;">
+        </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.mjs" type="module"></script>
+
+<script type="module">
+    // Pega os dados que o Django nos enviou
+    const pdfUrl = "{% url 'biblioteca:book-pdf-data' book.pk %}";
+    const watermarkUser = "Acessado por: {{ user.username|escapejs }}";
+
+    // --- CONFIGURAÇÃO CORRIGIDA DO PDF.js ---
+    // 2. Aponta o 'worker' para a mesma fonte/versão da biblioteca principal
+    const { pdfjsLib } = globalThis;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.mjs`;
+
+    // Elementos da página
+    const viewerContainer = document.getElementById('pdf-viewer-container');
+    const pageNumSpan = document.getElementById('page_num');
+    const pageCountSpan = document.getElementById('page_count');
+
+    let pdfDoc = null;
+
+    // O resto da sua lógica de renderização e marca d'água continua exatamente igual
+    async function renderPage(num) {
+        const page = await pdfDoc.getPage(num);
+        const scale = 1.5;
+        const viewport = page.getViewport({ scale: scale });
+
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        canvas.style.display = 'block';
+        canvas.style.margin = 'auto';
+        canvas.style.marginBottom = '10px';
+
+        viewerContainer.appendChild(canvas);
+
+        const renderContext = { canvasContext: context, viewport: viewport };
+        await page.render(renderContext).promise;
+
+        context.font = "12px Arial";
+        context.fillStyle = "rgba(0, 0, 0, 0.3)";
+        context.textAlign = "right";
+        context.fillText(watermarkUser, canvas.width - 15, canvas.height - 15);
+
+        context.save();
+        context.textAlign = "center";
+        context.font = "bold 48px Arial";
+        context.fillStyle = "rgba(0, 0, 0, 0.08)";
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(-0.25 * Math.PI);
+        context.fillText(watermarkUser, 0, 0);
+        context.restore();
+    }
+
+    try {
+        const loadingTask = pdfjsLib.getDocument(pdfUrl);
+        pdfDoc = await loadingTask.promise;
+        pageCountSpan.textContent = pdfDoc.numPages;
+
+        // Limpa o container antes de adicionar as novas páginas
+        viewerContainer.innerHTML = ''; 
+
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+            pageNumSpan.textContent = i;
+            await renderPage(i);
+        }
+    } catch (error) {
+        console.error("Erro ao carregar o PDF:", error);
+        viewerContainer.textContent = 'Falha ao carregar o PDF. Tente novamente mais tarde.';
+    }
+</script>
+{% endblock %}

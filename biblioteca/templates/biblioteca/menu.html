@@ -1,0 +1,47 @@
+{% extends "biblioteca/biblioteca_base.html" %}
+{% load static %}
+
+{% block title %}Acervo da Biblioteca{% endblock %}
+
+{% block head_extra %}
+<style>
+    /* Estilo para forçar a proporção A4 (210/297) na imagem da capa */
+    .card-img-top-a4 {
+        aspect-ratio: 210 / 297;
+        object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Nosso Acervo</h1>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for book in books %}
+        <div class="col">
+            <div class="card h-100 text-bg-dark shadow-sm">
+                <a href="{{ book.get_absolute_url }}">
+                    {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}" class="card-img-top card-img-top-a4" alt="Capa de {{ book.title }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="card-img-top card-img-top-a4" alt="Capa não disponível">
+                    {% endif %}
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text text-muted small">por {{ book.author }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary w-100">Ler Agora</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="col">
+                <p>Nenhum livro disponível no momento.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
