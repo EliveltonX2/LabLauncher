@@ -67,3 +67,45 @@ const templatesSwiper = new Swiper('.templates-swiper', {
         },
     },
 });
+
+// script.js (Adicione este bloco no final)
+
+// Carrossel 3: Features (O NOVO)
+const featuresSwiper = new Swiper('.features-swiper', {
+    // Efeito 'slide' (padrão)
+    
+    // Quantos slides por view
+    slidesPerView: 1, // Começa com 1 no celular
+    
+    // Espaço entre os slides
+    spaceBetween: 30,
+    
+    // Loop
+    loop: true,
+
+    // Paginação (bolinhas)
+    pagination: {
+        el: '.features-swiper .swiper-pagination', // Seja específico
+        clickable: true,
+    },
+
+    // Navegação (setas)
+    navigation: {
+        nextEl: '.features-swiper .swiper-button-next', // Seja específico
+        prevEl: '.features-swiper .swiper-button-prev', // Seja específico
+    },
+
+    // Responsividade (Breakpoints)
+    breakpoints: {
+        // quando a tela for >= 768px (tablet)
+        768: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+        },
+        // quando a tela for >= 1024px (desktop)
+        1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+        },
+    },
+});
