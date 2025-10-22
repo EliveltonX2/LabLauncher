@@ -8,7 +8,7 @@ const swiper = new Swiper('.hero-swiper', {
     
     // Autoplay (troca sozinho)
     autoplay: {
-        delay: 3000, // 3 segundos
+        delay: 6000, // 5 segundos
         disableOnInteraction: false, // Continua mesmo se o usuário mexer
     },
 
