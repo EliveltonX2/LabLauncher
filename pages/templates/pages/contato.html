@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/logos/lablauncher.svg' %}" type="image/svg+xml">
+    <title>Kaizo - Contato</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{% static 'css/kaizo_main.css' %}"> 
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <a href="#" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
+            <ul class="nav-links">
+                <li><a href="{% url 'kaizo_view' %}">Home</a></li>
+                <li><a href="{% url 'sobre' %}">Sobre</a></li>
+                <li><a href="{% url 'kaizo_view' %}#templates-sectionn">Obras</a></li>
+                <li><a href="{% url 'contato' %}">Contato</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!--
+                <a href="#" class="btn btn-login">Log In</a>
+                -->
+                <a href="#" class="btn btn-primary">LabLauncher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="static-content">
+                <h1>Entre em Contato</h1>
+                <p>Tem alguma dúvida, sugestão ou feedback? Adoraríamos ouvir de você. Preencha o formulário abaixo e nossa equipe responderá o mais rápido possível.</p>
+                
+                <form action="#" id="contact_form" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Assunto</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensagem</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" id="submit_button" class="form-button">Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            
+            <div class="footer-grid">
+                
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">Kaizo Soluções e Tecnologia Ltda</a> 
+                    <p>Campo Grande, MS, Brasil</p>
+                    <p>contato@kaizo.com.br</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Follow</h4>
+                    <ul>
+                    <!--
+                        <li><a href="#">Todos os Serviços</a></li>
+                        <li><a href="#">Construtor Gratuito</a></li>
+                        <li><a href="#">Templates Grátis</a></li>
+                        <li><a href="#">Análise ATS</a></li>
+                    -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#">LabLauncher</a></li>
+                        <!--
+                            <li><a href="#">Exemplos de Currículo</a></li>
+                            <li><a href="#">Exemplos de Carta</a></li>
+                            <li><a href="#">Blog</a></li>    
+                        -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="{% url 'sobre' %}">Sobre Nós</a></li>
+                        <li><a href="{% url 'contato' %}">Contato</a></li>
+                        <!--
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Central de Ajuda</a></li>
+                        -->
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAIZO. Todos os direitos reservados.</p>
+                <p>&copy; 2025 LabLauncher. Todos os direitos reservados.</p>
+                <div class="footer-legal-links">
+                    <a href="termos.html">Termos de Uso</a>
+                    <a href="politica.html">Política de Privacidade</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <script src="{% static "js/contact.js" %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"> 
+
+    </body>
+</html>

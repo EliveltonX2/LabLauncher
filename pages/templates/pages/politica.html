@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/logos/lablauncher.svg' %}" type="image/svg+xml">
+    <title>Kaizo - politicas</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{% static 'css/kaizo_main.css' %}">
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <a href="#" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
+            <ul class="nav-links">
+                <li><a href="{% url 'kaizo_view' %}">Home</a></li>
+                <li><a href="{% url 'sobre' %}">Sobre</a></li>
+                <li><a href="{% url 'kaizo_view' %}#templates-sectionn">Obras</a></li>
+                <li><a href="{% url 'contato' %}">Contato</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!--
+                <a href="#" class="btn btn-login">Log In</a>
+                -->
+                <a href="#" class="btn btn-primary">LabLauncher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="static-content">
+                <h1>Política de Privacidade</h1>
+                <h1>KAIZO</h1>
+                <p>Última atualização: 22 de Outubro de 2025</p>
+                <p>Na Kaizo, levamos a sua privacidade a sério. Esta Política de Privacidade tem o
+                     objetivo de explicar, com total transparência, como coletamos, usamos, armazenamos
+                      e protegemos os seus dados pessoais durante a sua interação com o nosso site e com
+                       a plataforma Kaizo LabLauncher.
+                <br><br>Ao utilizar nossos serviços, você concorda com os termos descritos a seguir.</p>
+
+                <h2>Base Legal</h2>
+                <p>Esta Política de Privacidade está em conformidade com a Lei Geral de Proteção de Dados (LGPD) – Lei nº 13.709/2018, garantindo os direitos e deveres relacionados à coleta, uso e proteção de dados pessoais.</p>
+                
+                <h2>1. Coleta e Uso de Informações</h2>
+                <p>Coletamos vários tipos diferentes de informações para diversos fins, a fim de fornecer e melhorar nosso Serviço para você.</p>
+                <ul>
+                    <li><strong>Dados Pessoais:</strong> Ao usar nosso Serviço, podemos solicitar que você nos forneça certas informações de identificação pessoal que podem ser usadas para contatá-lo ou identificá-lo ("Dados Pessoais"). Isso pode incluir, mas não se limita a: endereço de e-mail, nome e sobrenome, dados de currículo.</li>
+                    <li><strong>Dados de Uso:</strong> Também podemos coletar informações sobre como o Serviço é acessado e usado ("Dados de Uso").</li>
+                </ul>
+
+                <h2>2. Uso dos Dados</h2>
+                <p>KAIZO usa os dados coletados para vários propósitos:</p>
+                <ul>
+                    <li>Para fornecer e manter nosso Serviço;</li>
+                    <li>Para notificá-lo sobre alterações em nosso Serviço;</li>
+                    <li>Para permitir que você participe de recursos interativos do nosso Serviço quando optar por fazê-lo;</li>
+                    <li>Para monitorar o uso do nosso Serviço;</li>
+                    <li>Para detectar, prevenir e resolver problemas técnicos.</li>
+                </ul>
+                <p>Importante: A Kaizo NÃO vende, NÃO aluga e NÃO compartilha seus dados com terceiros para fins de marketing.</p>
+
+                <h2>3. Segurança dos Dados</h2>
+                <p>A segurança dos seus dados é importante para nós, mas lembre-se de que nenhum método de transmissão pela Internet ou método de armazenamento eletrônico é 100% seguro. Embora nos esforcemos para usar meios comercialmente aceitáveis para proteger seus Dados Pessoais, não podemos garantir sua segurança absoluta.</p>
+
+                <h2>4. Compartilhamento de dados com terceiros</h2>
+                <p>Para garantir a operação e a segurança da plataforma, alguns serviços de infraestrutura são fornecidos por parceiros tecnológicos de confiança:
+                <br><br>
+                Render: Responsável pela hospedagem do site e do banco de dados<br><br>
+                Amazon Web Services (AWS): Utilizada para armazenamento seguro de arquivos e dados (ex.: uploads de usuários, modelos 3D, etc.)<br><br>
+                O compartilhamento com esses parceiros é feito exclusivamente para garantir o funcionamento técnico da plataforma, sob contratos que exigem o mesmo nível de proteção de dados determinado pela LGPD.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            
+            <div class="footer-grid">
+                
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">Kaizo Soluções e Tecnologia Ltda</a> 
+                    <p>Campo Grande, MS, Brasil</p>
+                    <p>contato@kaizo.com.br</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Follow</h4>
+                    <ul>
+                    <!--
+                        <li><a href="#">Todos os Serviços</a></li>
+                        <li><a href="#">Construtor Gratuito</a></li>
+                        <li><a href="#">Templates Grátis</a></li>
+                        <li><a href="#">Análise ATS</a></li>
+                    -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}">LabLauncher</a></li>
+                        <!--
+                            <li><a href="#">Exemplos de Currículo</a></li>
+                            <li><a href="#">Exemplos de Carta</a></li>
+                            <li><a href="#">Blog</a></li>    
+                        -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="{% url 'sobre' %}">Sobre Nós</a></li>
+                        <li><a href="{% url 'contato' %}">Contato</a></li>
+                        <!--
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Central de Ajuda</a></li>
+                        -->
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAIZO. Todos os direitos reservados.</p>
+                <p>&copy; 2025 LabLauncher. Todos os direitos reservados.</p>
+                <div class="footer-legal-links">
+                    <a href="{% url 'termos' %}">Termos de Uso</a>
+                    <a href="{% url 'politica' %}">Política de Privacidade</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> <script src="media/script.js"></script> </body>
+</html>

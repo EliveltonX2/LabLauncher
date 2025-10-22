@@ -22,6 +22,18 @@ def home_view(request):
 def kaizo_view(request):
    return render(request, 'pages/kaizo.html',)
 
+def sobre_view(request):
+   return render(request, 'pages/sobre.html',)
+
+def contato_view(request):
+   return render(request, 'pages/contato.html',)
+
+def politica_view(request):
+   return render(request, 'pages/politica.html',)
+
+def termos_view(request):
+   return render(request, 'pages/termos.html',)
+
 @login_required # Garante que apenas usuários logados acessem esta página
 def dashboard_view(request):
     # Busca as peças do usuário logado

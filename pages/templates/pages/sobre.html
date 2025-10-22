@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/logos/lablauncher.svg' %}" type="image/svg+xml">
+    <title>Kaizo - Sobre</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{% static 'css/kaizo_main.css' %}"> 
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <a href="#" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
+            <ul class="nav-links">
+                <li><a href="{% url 'kaizo_view' %}">Home</a></li>
+                <li><a href="{% url 'sobre' %}">Sobre</a></li>
+                <li><a href="{% url 'kaizo_view' %}#templates-sectionn">Obras</a></li>
+                <li><a href="{% url 'contato' %}">Contato</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!--
+                <a href="#" class="btn btn-login">Log In</a>
+                -->
+                <a href="#" class="btn btn-primary">LabLauncher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="static-content">
+                <h1>Sobre a KAIZO</h1>
+                <p>A Kaizo nasceu da união entre tecnologia, propósito e transformação real. Mais do que fornecer
+                     equipamentos ou montar laboratórios, criamos ambientes que inspiram mudança em escolas, 
+                     instituições públicas e empresas que acreditam no poder da inovação para evoluir.</p>
+                
+                <p>Nosso nome vem do japonês “<b>改造</b>”(kaizō), que significa <b>modificar para melhorar.</b> Popularizado
+                     no universo dos games, o termo representa a arte de <b>reinventar com inteligência e criatividade,</b>
+                      superando limites e recriando possibilidades.</p>
+
+                <p><b>Essa é a nossa essência: transformar o já existente em algo mais eficaz, acessível e duradouro.</b>
+                     Com uma metodologia própria que alia infraestrutura tecnológica, suporte contínuo e conteúdos
+                      didáticos exclusivos, a Kaizo entrega soluções que vão além do digital são experiências integradas,
+                       que conectam o fazer pedagógico, a gestão eficiente e o impacto social.<br><br>
+                       Acreditamos que inovação não precisa ser complicada, e que o futuro se constrói
+                        com ferramentas certas, boas ideias e pessoas preparadas. É por isso que estamos
+                         aqui: para tornar possível o que antes parecia distante.</p>     
+
+                <h2>TECNOLOGIA QUE CONECTA.</h2>
+                    <p>A Kaizo vai além do simples aluguel de equipamentos: entregamos laboratórios completos, prontos para uso, com infraestrutura de ponta, suporte técnico presencial, manutenção contínua e todos os insumos necessários inclusos. Oferecemos ainda seguro dos equipamentos, internet dedicada e uma plataforma digital exclusiva o Kaizo LabLauncher para transformar o laboratório em um ambiente de aprendizagem ativa, prática e inovadora. Tudo isso, sem surpresas nos custos e com foco total em resultado.</p>
+
+                <h2>INOVAÇÃO COM PROPÓSITO.</h2>
+                    <p>A Kaizo é referência em soluções integradas, oferecendo muito mais do que tecnologia: entregamos ambientes completos, preparados para inspirar, engajar e transformar a rotina. Com nossa equipe técnica dedicada, insumos sempre disponíveis, manutenção ágil e uma plataforma digital exclusiva, garantimos o pleno funcionamento dos laboratórios e a tranquilidade para gestores e professores. Nossa missão é conectar inovação e propósito em cada detalhe, assegurando o sucesso das práticas pedagógicas.</p>
+
+                <h2>TRANSFORMAÇÃO REAL EM CADA DETALHE.</h2>
+                    <p>Na Kaizo, cada laboratório é pensado para ser eficiente, seguro e pronto para o futuro. Fornecemos estrutura física completa, equipamentos de alto padrão e internet exclusiva. O suporte é contínuo, com técnicos presentes e soluções rápidas para qualquer imprevisto. A plataforma Kaizo LabLauncher organiza e potencializa o uso pedagógico dos laboratórios, tornando a experiência de alunos e professores mais dinâmica e produtiva, sempre com custos claros e gestão simplificada.</p>
+
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            
+            <div class="footer-grid">
+                
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">Kaizo Soluções e Tecnologia Ltda</a> 
+                    <p>Campo Grande, MS, Brasil</p>
+                    <p>contato@kaizo.com.br</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Follow</h4>
+                    <ul>
+                    <!--
+                        <li><a href="#">Todos os Serviços</a></li>
+                        <li><a href="#">Construtor Gratuito</a></li>
+                        <li><a href="#">Templates Grátis</a></li>
+                        <li><a href="#">Análise ATS</a></li>
+                    -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}">LabLauncher</a></li>
+                        <!--
+                            <li><a href="#">Exemplos de Currículo</a></li>
+                            <li><a href="#">Exemplos de Carta</a></li>
+                            <li><a href="#">Blog</a></li>    
+                        -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="{% url 'sobre' %}">Sobre Nós</a></li>
+                        <li><a href="{% url 'contato' %}">Contato</a></li>
+                        <!--
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Central de Ajuda</a></li>
+                        -->
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAIZO. Todos os direitos reservados.</p>
+                <p>&copy; 2025 LabLauncher. Todos os direitos reservados.</p>
+                <div class="footer-legal-links">
+                    <a href="{% url 'termos' %}">Termos de Uso</a>
+                    <a href="{% url 'politica' %}">Política de Privacidade</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> <script src="media/script.js"></script> </body>
+</html>

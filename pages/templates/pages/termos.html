@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/logos/lablauncher.svg' %}" type="image/svg+xml">
+    <title>Kaizo - Termos</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{% static 'css/kaizo_main.css' %}"> 
+</head>
+<body>
+
+    <header>
+       <nav class="container">
+            <a href="#" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
+            <ul class="nav-links">
+                <li><a href="{% url 'kaizo_view' %}">Home</a></li>
+                <li><a href="{% url 'sobre' %}">Sobre</a></li>
+                <li><a href="{% url 'kaizo_view' %}#templates-sectionn">Obras</a></li>
+                <li><a href="{% url 'contato' %}">Contato</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!--
+                <a href="#" class="btn btn-login">Log In</a>
+                -->
+                <a href="#" class="btn btn-primary">LabLauncher</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="static-content">
+                <h1>Termos de Uso</h1>
+                <p>Última atualização: 22 de Outubro de 2025</p>
+                <p>Por favor, leia estes Termos de Uso ("Termos") cuidadosamente antes de usar o site MeuSite (o "Serviço") operado por nós.</p>
+                <hr>
+                <h2>1. Aceitação dos Termos</h2>
+                <p>Ao utilizar o Kaizo LabLauncher, você declara que leu, entendeu e concorda com estes Termos de Uso. Caso não concorde com algum dos pontos, recomendamos que não utilize a plataforma.</p>
+                <hr>
+                <h2>2. Descrição do Serviço</h2>
+                <p>O Kaizo LabLauncher é uma plataforma digital criada pela Kaizo para conectar professores, técnicos e gestores aos 
+                    recursos, conteúdos e ferramentas que dão suporte aos laboratórios educacionais implantados pela empresa.
+                    Entre as funcionalidades disponíveis, o usuário poderá acessar:
+                    <br><br>
+                    *Documentação técnica dos equipamentos<br>
+                    *Modelos 3D para impressão<br>
+                    *Materiais de apoio relacionados aos laboratórios contratados<br>
+                    *Ferramentas de acompanhamento e gestão de uso<br><br>
+                    O acesso aos conteúdos é restrito e varia de acordo com o contrato firmado entre a escola ou Secretaria de Educação e a Kaizo.</p>
+                <hr>
+                <h2>3. Propriedade Intelectual</h2>
+                <p>O Serviço e seu conteúdo original, recursos e funcionalidades são e permanecerão como propriedade exclusiva do MeuSite e seus licenciadores. O Serviço é protegido por direitos autorais, marcas registradas e outras leis de países estrangeiros.</p>
+                <hr>
+                <h2>4. Links Para Outros Sites</h2>
+                <p>Nosso Serviço pode conter links para sites ou serviços de terceiros que não são de propriedade ou controlados pelo MeuSite. Não temos controle e não assumimos responsabilidade pelo conteúdo, políticas de privacidade ou práticas de quaisquer sites ou serviços de terceiros.</p>
+                <hr>
+                <h2>5. Rescisão</h2>
+                <p>Podemos rescindir ou suspender seu acesso ao nosso Serviço imediatamente, sem aviso prévio ou responsabilidade, por qualquer motivo, incluindo, sem limitação, se você violar os Termos.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            
+            <div class="footer-grid">
+                
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">Kaizo Soluções e Tecnologia Ltda</a> 
+                    <p>Campo Grande, MS, Brasil</p>
+                    <p>contato@kaizo.com.br</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Follow</h4>
+                    <ul>
+                    <!--
+                        <li><a href="#">Todos os Serviços</a></li>
+                        <li><a href="#">Construtor Gratuito</a></li>
+                        <li><a href="#">Templates Grátis</a></li>
+                        <li><a href="#">Análise ATS</a></li>
+                    -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}">LabLauncher</a></li>
+                        <!--
+                            <li><a href="#">Exemplos de Currículo</a></li>
+                            <li><a href="#">Exemplos de Carta</a></li>
+                            <li><a href="#">Blog</a></li>    
+                        -->
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="{% url 'sobre' %}">Sobre Nós</a></li>
+                        <li><a href="{% url 'contato' %}">Contato</a></li>
+                        <!--
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Central de Ajuda</a></li>
+                        -->
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAIZO. Todos os direitos reservados.</p>
+                <p>&copy; 2025 LabLauncher. Todos os direitos reservados.</p>
+                <div class="footer-legal-links">
+                    <a href="{% url 'termos' %}">Termos de Uso</a>
+                    <a href="{% url 'politica' %}">Política de Privacidade</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> <script src="media/script.js"></script> </body>
+</html>
