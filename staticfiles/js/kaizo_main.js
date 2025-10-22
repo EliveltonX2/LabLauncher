@@ -8,7 +8,7 @@ const swiper = new Swiper('.hero-swiper', {
     
     // Autoplay (troca sozinho)
     autoplay: {
-        delay: 3000, // 3 segundos
+        delay: 6000, // 5 segundos
         disableOnInteraction: false, // Continua mesmo se o usuário mexer
     },
 
@@ -64,6 +64,48 @@ const templatesSwiper = new Swiper('.templates-swiper', {
         // quando a tela for >= 1024px (desktop)
         1024: {
             slidesPerView: 3, // Mostra 3 slides (1 centro, 2 laterais)
+        },
+    },
+});
+
+// script.js (Adicione este bloco no final)
+
+// Carrossel 3: Features (O NOVO)
+const featuresSwiper = new Swiper('.features-swiper', {
+    // Efeito 'slide' (padrão)
+    
+    // Quantos slides por view
+    slidesPerView: 1, // Começa com 1 no celular
+    
+    // Espaço entre os slides
+    spaceBetween: 30,
+    
+    // Loop
+    loop: true,
+
+    // Paginação (bolinhas)
+    pagination: {
+        el: '.features-swiper .swiper-pagination', // Seja específico
+        clickable: true,
+    },
+
+    // Navegação (setas)
+    navigation: {
+        nextEl: '.features-swiper .swiper-button-next', // Seja específico
+        prevEl: '.features-swiper .swiper-button-prev', // Seja específico
+    },
+
+    // Responsividade (Breakpoints)
+    breakpoints: {
+        // quando a tela for >= 768px (tablet)
+        768: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+        },
+        // quando a tela for >= 1024px (desktop)
+        1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
         },
     },
 });
