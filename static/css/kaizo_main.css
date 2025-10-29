@@ -330,7 +330,7 @@ nav {
 }
 
 .showcase-content h2 {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 16px;
@@ -719,11 +719,11 @@ footer {
     }
 
     .hero-content h1 {
-        font-size: 2.3rem;
+        font-size: 2rem;
     }
 
     .section-title h2 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
     .showcase-grid {
         /* Faz o showcase ficar com 1 coluna */
