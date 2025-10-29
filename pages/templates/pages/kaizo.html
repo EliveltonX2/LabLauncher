@@ -18,20 +18,28 @@
 
     <header>
         <nav class="container">
-            <a href="#" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
+            <a href="{% url "kaizo_view" %}" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
             <ul class="nav-links">
                 <li><a href="{% url 'kaizo_view' %}">Home</a></li>
                 <li><a href="{% url 'sobre' %}">Sobre</a></li>
                 <li><a href="{% url 'kaizo_view' %}#templates-sectionn">Obras</a></li>
                 <li><a href="{% url 'contato' %}">Contato</a></li>
+
+                <li class="nav-links-mobile-action">
+                    <a href="{% url 'home' %}" class="btn btn-primary">LabLauncher</a>
+                </li>
             </ul>
 
             <div class="nav-actions">
-                <!--
-                <a href="#" class="btn btn-login">Log In</a>
-                -->
                 <a href="{% url 'home' %}" class="btn btn-primary">LabLauncher</a>
             </div>
+
+            <button class="nav-toggle" aria-label="Abrir menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
         </nav>
     </header>
 
@@ -39,13 +47,28 @@
         <section class="hero container">
             
             <div class="hero-content">
-                <h1>Exploradores da Computação<span class="h1-2"> está chegando</span></h1>
+                <h1>Exploradores da Computação já é realidade<span class="h1-2"> e está redefinindo como as escolas ensinam tecnologia no Brasil</span></h1>
                 <p>
-                    <b>A primeira coleção de Computação do Brasil que acompanha o aluno do 1º ao 9º ano</b> — de forma contínua, progressiva e 100% alinhada à BNCC.
+                    <b>A primeira coleção de Computação do Brasil que acompanha o aluno do 1º ao 9º ano</b> desenvolvida com base na BNCC para transformar 
+                    alunos em criadores de tecnologia. Com atividades plugadas e desplugadas, narrativas envolventes e desafios reais, os estudantes aprendem 
+                    a pensar de forma lógica, criativa e digital — passo a passo, em uma evolução contínua.
+
                     <br><br>
-                    Não é apenas um material didático. <b>É uma trilha de formação digital completa,</b> com aulas plugadas e desplugadas, especialmente construídas
-                     para desenvolver as competências do futuro — passo a passo, ano após ano, com a segurança da BNCC e a força da prática real em cada atividade.
+                    Mais do que ensinar ferramentas, a coleção desperta curiosidade, 
+                    autonomia e visão crítica desde os primeiros anos, preparando novas 
+                    gerações para pensar com tecnologia e não apenas consumi-la.
                 </p>
+
+
+
+
+                
+
+
+
+
+
+
                 
             </div>
 
@@ -123,19 +146,19 @@
 
                         <div class="swiper-slide">
                             <a href="#" class="template-card">
-                                <img src="{% static "images/capas/s1.png" %}" alt="Template s1">
+                                <img src="{% static "images/capas/s1.jpg" %}" alt="Template s1">
                             </a>
                         </div>
 
                         <div class="swiper-slide">
                             <a href="#" class="template-card">
-                                <img src="{% static "images/capas/s2.png" %}" alt="Template s2">
+                                <img src="{% static "images/capas/s2.jpg" %}" alt="Template s2">
                             </a>
                         </div>
 
                         <div class="swiper-slide">
                             <a href="#" class="template-card">
-                                <img src="{% static "images/capas/s3.png" %}" alt="Template s3">
+                                <img src="{% static "images/capas/s3.jpg" %}" alt="Template s3">
                             </a>
                         </div>
                         
@@ -204,6 +227,139 @@
             </div>
         </section>
 
+        <section class="features-carousel-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Coleção Exploradores da Computação</h2>
+                    <p>A coleção que prepara o estudante para viver e criar no mundo digital. Do 1º ao 9º ano, 
+                        desenvolve pensamento computacional, criatividade, lógica e cidadania digital por meio 
+                        de atividades práticas, histórias significativas e projetos conectados à realidade do 
+                        aluno — tudo alinhado à BNCC.<br><br>
+                        
+                        Os volumes foram organizados em sequência progressiva, mas cada livro pode ser adotado isoladamente. 
+                        Graças às revisões pedagógicas integradas, o estudante consegue acompanhar o conteúdo mesmo iniciando 
+                        em anos posteriores, sem prejuízo da aprendizagem. Isso oferece autonomia para a escola e segurança para toda a rede.
+                    </p>
+                </div>
+
+                <div class="swiper features-swiper">
+                    <div class="swiper-wrapper">
+                        
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e1.jpg" %}" alt="Coleção exploradores da computação 1">
+                                <div class="feature-card-content">
+                                    <h3>Volume 1<br>Descobrindo a Computação</h3>
+                                    <p>Introduz os primeiros conceitos da computação de forma lúdica e interativa. 
+                                        Desenvolve pensamento computacional por meio de histórias, jogos e atividades 
+                                        com e sem computador, estimulando lógica, criatividade e alfabetização digital.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e2.jpg" %}" alt="Coleção exploradores da computação 2">
+                                <div class="feature-card-content">
+                                    <h3>Volume 2<br>Criando Passos Digitais</h3>
+                                    <p>Amplia a autonomia digital do estudante com atividades que envolvem criação, 
+                                        uso funcional de teclado e mouse e organização lógica de ações. Trabalha comandos 
+                                        básicos e pensamento computacional de forma divertida e progressiva.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e3.jpg" %}" alt="Coleção exploradores da computação 3">
+                                <div class="feature-card-content">
+                                    <h3>Volume 3<br>Resolvendo Desafios com Lógica</h3>
+                                    <p>Estimula o raciocínio lógico por meio de desafios, investigações e jogos. 
+                                        O aluno aprende a identificar problemas, criar soluções e transformar 
+                                        ideias em ações organizadas, fortalecendo a tomada de decisão digital.</p>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e4.jpg" %}" alt="Coleção exploradores da computação 4">
+                                <div class="feature-card-content">
+                                    <h3>Volume 4<br>Contando Histórias Digitais</h3>
+                                    <p>Apresenta a programação em blocos como ferramenta de criação. 
+                                        O estudante transforma ideias em histórias animadas, aprendendo 
+                                        lógica, narrativa digital e resolução de erros de forma criativa e integrada à BNCC.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e5.jpg" %}" alt="Coleção exploradores da computação 5">
+                                <div class="feature-card-content">
+                                    <h3>Volume 5<br>Projetando o Mundo Digital</h3>
+                                    <p>O aluno avança na criação de projetos interativos no Scratch, utilizando laços, condições e animações. 
+                                        Também aprende cidadania digital e responsabilidade no uso da tecnologia, desenvolvendo visão crítica 
+                                        e criativa do mundo conectado.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e6.jpg" %}" alt="Coleção exploradores da computação 6">
+                                <div class="feature-card-content">
+                                    <h3>Volume 6<br>Explorando Computadores e Redes</h3>
+                                    <p>Explora o funcionamento dos computadores e da internet, abordando hardware, software e dados. 
+                                        Com práticas reais, o estudante entende como a tecnologia opera no cotidiano e desenvolve 
+                                        autonomia e segurança digital.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e7.jpg" %}" alt="Coleção exploradores da computação 7">
+                                <div class="feature-card-content">
+                                    <h3>Volume 7<br>Criando Soluções com Lógica Digital</h3>
+                                    <p>Introduz a programação textual com Portugol. O estudante aprende a construir 
+                                        algoritmos com variáveis, condições e repetições, desenvolvendo raciocínio 
+                                        estruturado e capacidade de transformar ideias em soluções digitais.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e8.jpg" %}" alt="Coleção exploradores da computação 8">
+                                <div class="feature-card-content">
+                                    <h3>Volume 8<br>Desvendando Dados e Inteligência Artificial</h3>
+                                    <p>Apresenta o universo dos dados e da inteligência artificial de forma acessível e prática. 
+                                        O aluno aprende a coletar, organizar e interpretar informações, desenvolvendo 
+                                        pensamento crítico e consciência sobre o uso da tecnologia.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="feature-card">
+                                <img src="{% static "images/capas/e9.jpg" %}" alt="Coleção exploradores da computação 9">
+                                <div class="feature-card-content">
+                                    <h3>Volume 9<br>Conectando Projetos e Comunidade</h3>
+                                    <p>Conclui a jornada com criação de projetos digitais usando Python, IA e dados. 
+                                        O estudante aplica o conhecimento em situações reais, desenvolvendo 
+                                        protagonismo digital e visão de tecnologia a serviço da sociedade.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+
+                    </div>
+                    
+                    <div class="swiper-pagination"></div>
+
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+        </section>
+
 
         <section class="features-carousel-section">
             <div class="container">
@@ -219,7 +375,7 @@
                         
                         <div class="swiper-slide">
                             <div class="feature-card">
-                                <img src="{% static "images/capas/s1.png" %}" alt="Coleção Sementes 1">
+                                <img src="{% static "images/capas/s1.jpg" %}" alt="Coleção Sementes 1">
                                 <div class="feature-card-content">
                                     <h3>Volume 1<br>Ensino Fundamental 1</h3>
                                     <p>Transformando práticas. Cultivando futuros.O primeiro passo para formar cidadãos 
@@ -232,7 +388,7 @@
 
                         <div class="swiper-slide">
                             <div class="feature-card">
-                                <img src="{% static "images/capas/s2.png" %}" alt="Coleção Sementes 2">
+                                <img src="{% static "images/capas/s2.jpg" %}" alt="Coleção Sementes 2">
                                 <div class="feature-card-content">
                                     <h3>Volume 2<br>Ensino Fundamental 2</h3>
                                     <p>Cultivando autoria, criatividade e transformação.Aqui o aluno deixa de ser apenas 
@@ -245,7 +401,7 @@
 
                         <div class="swiper-slide">
                             <div class="feature-card">
-                                <img src="{% static "images/capas/s3.png" %}" alt="Coleção Sementes 3">
+                                <img src="{% static "images/capas/s3.jpg" %}" alt="Coleção Sementes 3">
                                 <div class="feature-card-content">
                                     <h3>Volume 3<br>Inteligência Artificial para Todas as Etapas</h3>
                                     <p>A inteligência artificial que floresce na prática docente.O primeiro livro do Brasil
@@ -266,6 +422,7 @@
                 </div>
             </div>
         </section>
+
 
         <section class="showcase">
             <div class="container showcase-grid">
@@ -370,6 +527,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script src="{% static "js/kaizo_main.js" %}"></script>
+    <script src="{% static "js/navbar.js" %}"></script>
 
 </body>
 </html>

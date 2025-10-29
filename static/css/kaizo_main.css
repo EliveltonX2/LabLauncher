@@ -190,7 +190,7 @@ nav {
 .section-title p {
     font-size: 1.1rem;
     color: #4b5563;
-    max-width: 500px;
+    max-width: 700px;
     margin: 0 auto;
 }
 
@@ -649,6 +649,7 @@ footer {
     color: #4b5563;
     line-height: 1.6;
     margin: 0;
+    text-align: justify;
 }
 
 /* --- Estilização do Swiper (Setas e Bolinhas) para o NOVO carrossel --- */
@@ -671,6 +672,30 @@ footer {
 .features-swiper .swiper-button-prev::after {
     font-size: 1.2rem;
     font-weight: 800;
+}
+
+/* --- Estilos do Menu Hamburger --- */
+
+.nav-toggle {
+    display: none; /* Escondido no Desktop */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1000; /* Garante que fique na frente */
+}
+
+.nav-toggle .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: #111827; /* Cor escura do texto */
+    transition: all 0.3s ease;
+}
+
+.nav-links .nav-links-mobile-action {
+    display: none;
 }
 
 
@@ -748,7 +773,76 @@ footer {
         font-weight: 800;
     }
 
+/* 1. Mostra o botão hamburger no mobile */
+    .nav-toggle {
+        display: block;
+    }
+
+    /* 2. Esconde o botão de ação (opcional, mas recomendado) */
+    .nav-actions {
+        display: none;
+    }
+
+    /* 3. Transforma o menu em um painel que desliza */
+    .nav-links {
+        /* Esta é a mudança: em vez de 'display: none' */
+        display: flex;
+        flex-direction: column; /* Links um abaixo do outro */
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+
+        position: fixed; /* Ocupa a tela toda */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Altura total da tela */
+        
+        background-color: #ffffff; /* Fundo branco */
+        
+        /* Começa escondido (deslizado para a direita) */
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+    }
+
+    /* 4. A classe que o JavaScript vai adicionar */
+    .nav-links.active {
+        transform: translateX(0); /* Mostra o menu */
+    }
+
+    /* 5. Animação do botão para virar um 'X' */
+    .nav-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .nav-toggle.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .nav-toggle.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-actions {
+        display: none;
+    }
+
+    /* MOSTRA o botão duplicado (dentro do .nav-links) no mobile */
+    .nav-links .nav-links-mobile-action {
+        display: block; /* Faz ele aparecer */
+        margin-top: 24px; /* Dá um espaço entre ele e os links */
+        width: 100%; /* Faz ocupar a largura */
+        text-align: center; /* Centraliza o botão */
+    }
+
+    /* Faz o botão ficar maior e mais fácil de clicar */
+    .nav-links .nav-links-mobile-action a.btn-primary {
+        padding: 12px 30px;
+        font-size: 1rem;
+        width: 80%; /* Ocupa 80% da largura do menu */
+    }
+
 }
+
+
 @media (max-width: 480px) {
     .footer-grid {
         /* Vira 1 coluna só em telas bem pequenas */

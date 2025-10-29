@@ -16,22 +16,30 @@
 </head>
 <body>
 
-    <header>
+   <header>
         <nav class="container">
-            <a href="#" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
+            <a href="{% url "kaizo_view" %}" class="nav-logo"><img src="{% static "images/logos/kaizoLogo.png" %}" alt="Logo Kaizo"></a>
             <ul class="nav-links">
                 <li><a href="{% url 'kaizo_view' %}">Home</a></li>
                 <li><a href="{% url 'sobre' %}">Sobre</a></li>
                 <li><a href="{% url 'kaizo_view' %}#templates-sectionn">Obras</a></li>
                 <li><a href="{% url 'contato' %}">Contato</a></li>
+
+                <li class="nav-links-mobile-action">
+                    <a href="{% url 'home' %}" class="btn btn-primary">LabLauncher</a>
+                </li>
             </ul>
 
             <div class="nav-actions">
-                <!--
-                <a href="#" class="btn btn-login">Log In</a>
-                -->
-                <a href="#" class="btn btn-primary">LabLauncher</a>
+                <a href="{% url 'home' %}" class="btn btn-primary">LabLauncher</a>
             </div>
+
+            <button class="nav-toggle" aria-label="Abrir menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
         </nav>
     </header>
 
@@ -130,6 +138,8 @@
 
         </div>
     </footer>
+    <script src="{% static "js/navbar.js" %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> <script src="media/script.js"></script> </body>
+</body>
 </html>
